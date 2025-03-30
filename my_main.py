@@ -63,5 +63,5 @@ app.layout = dbc.Container(children=[container_row], className="dbc", fluid=True
 
 if __name__ == '__main__':
     print("antes")
-    app.run_server(debug=True, port=8060)
+    app.run(debug=True, port=8060)
     print("Despues")
