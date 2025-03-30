@@ -7,6 +7,7 @@ import pages.risk_diversification.risk_diversification_data as risk_diversificat
 def get_risk_diversification_page_layout():
     # Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
     page_grid_columns = 1  # Esto lo pongo a mano
+    dummy = "dummy_change"
     default_weight_criteria_column = 'Dinero (EUR)'
     risk_diversification_criteria_dict_list = [
         # {'criteria_name': 'empresa', 'data_column': 'Ticker', 'diversification_div': ''},
