@@ -1,6 +1,7 @@
 from dash import dcc
 from dash.dash_table import DataTable
 from dash.dash_table.Format import Format, Group
+import locale
 
 import pages.risk_diversification.risk_diversification_data as risk_diversification_data
 import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
@@ -78,7 +79,7 @@ def get_panel_body_row(pie_chart, table, pie_chart_id, table_id):
     return data_row
 
 
-## MUEVO ESTO A UN ARCHIVO DE PANEL COMPONENTS??????? y ahi creo todas las graficas tablas y demás que me apetezca????
+## TODO: MUEVO ESTO A UN ARCHIVO DE PANEL COMPONENTS / CHARTS / TABLES??????? y ahi creo todas las graficas tablas y demás que me apetezca????
 def get_risk_diversification_pie_chart(risk_criteria_name, weight_by_criteria_df, data_column, group_by_column):
     pie_chart_id = f"diversification_by_{risk_criteria_name}_pie_chart"
 
@@ -90,7 +91,22 @@ def get_risk_diversification_pie_chart(risk_criteria_name, weight_by_criteria_df
         template="vizro_dark"
         # template="plotly_dark"
     )
-    weight_by_criteria_pie_chart.update_layout(legend={'x': 1, 'y': 0.5})
+
+    pop_up_text_html = "<b>%{label} (%{percent})</b>  <br> " + data_column + ": %{value:,.2f}"
+
+    legend_format_dict = dict(
+        orientation="v",  # Set orientation to vertical ('v')
+        yanchor="top",    # Anchor the legend to the top
+        y=1,              # Position the legend at the top (y=1)
+        xanchor="left",   # Anchor the legend to the left
+        x=1.02,           # Position the legend slightly to the right of the chart (x=1.02)
+    )
+    pop_up_format_dict = dict(
+        font_size=22
+    )
+    weight_by_criteria_pie_chart.update_traces(hovertemplate=pop_up_text_html)
+    weight_by_criteria_pie_chart.update_layout(legend=legend_format_dict,
+                                               hoverlabel=pop_up_format_dict)
     weight_by_criteria_pie_chart_html_component = dcc.Graph(id=pie_chart_id,
                                                             figure=weight_by_criteria_pie_chart)
     return weight_by_criteria_pie_chart_html_component
