@@ -1,36 +1,31 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+import plotly.express as px
 
 app = dash.Dash(__name__)
 
-app.layout = html.Div([
-    html.H3("Checklist with Text Visibility"),
-    dcc.Checklist(
-        id='text-checklist',
-        options=[
-            {'label': 'Text 1', 'value': 'text1'},
-            {'label': 'Text 2', 'value': 'text2'},
-            {'label': 'Text 3', 'value': 'text3'}
-        ],
-        value=[]  # Initial values (all unchecked)
-    ),
-    html.Div(id='text-container')
-])
+# Sample data for the pie chart
+data = {'labels': ['Category A', 'Category B', 'Category C'],
+        'values': [30, 45, 25]}
 
-@app.callback(
-    Output('text-container', 'children'),
-    [Input('text-checklist', 'value')]
+# Create the pie chart figure
+fig = px.pie(data, values='values', names='labels')
+
+# Update the hovertemplate for larger pop-ups
+fig.update_traces(hovertemplate='<b>%{label}</b> (%{percent}) <br> Dinero(EUR): %{value}')
+
+# Update the layout to position the legend and increase hoverinfo font size
+fig.update_layout(
+    legend=dict(x=1, y=0.5),  # Adjust x and y values as needed
+    hoverlabel=dict(font_size=16)  # Adjust font size as desired
 )
-def update_text(selected_values):
-    texts = {
-        'text1': html.P("This is Text 1."),
-        'text2': html.P("This is Text 2."),
-        'text3': html.P("This is Text 3.")
-    }
-    displayed_texts = [texts[value] for value in selected_values]
-    return displayed_texts
+
+app.layout = html.Div(children=[
+    html.H1(children="Pie Chart with Larger Hover Pop-ups"),
+    dcc.Graph(id='pie-chart', figure=fig)
+])
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+
