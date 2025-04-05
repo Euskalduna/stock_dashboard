@@ -93,7 +93,7 @@
 2- Crear otra página que muestre la cartera actual
 3- Crear un sistema de paginado que permita alternar entre la página de las tartas y la página de la cartera
 4- Validar con usuario
-5- Corregir los cálculos de la Compra-Venta para que salgan bien las cosas (que no me aparezca CVS... y esas cosas)
+5- Corregir los cálculos de la Compra-Venta para que salgan bien las cosas (que no me aparezca CVS porque la he vendido en lugar de que me aparezca y con un importe superior porque toma la venta y la compra como lo mismo... y esas cosas)
 
 # OBJETIVOS SIGUIENTES SIGUIENTES:
 1- Crear la siguiente página (no sé cual es)

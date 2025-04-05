@@ -21,8 +21,19 @@ def get_page_general_selector_row(risk_diversification_criteria_dict_list):
         option_dict_list = [{'label': option.capitalize(), 'value': option} for option in option_value_list]
         return option_dict_list
 
+    def get_broker_dropdown_options():
+        df = risk_diversification_data.get_purchases_and_sales_log()
+        option_value_list = list(df['Broker'].unique())
+        option_value_list.append("Todo")
+        # Esto es para limpiar la lista de valores de posibles "nans"
+        option_value_list = [value for value in option_value_list if not pd.isnull(value)]
+        option_value_list.sort()
+        option_dict_list = [{'label': option.capitalize(), 'value': option} for option in option_value_list]
+        return option_dict_list
+
     diversification_option_dict_list = get_diversification_checklist_options(risk_diversification_criteria_dict_list)
     owner_option_dict_list = get_owner_dropdown_options()
+    broker_option_dict_list = get_broker_dropdown_options()
 
     selector_row = dbc.Row([
         # dbc.Col([dcc.Dropdown(
@@ -41,6 +52,17 @@ def get_page_general_selector_row(risk_diversification_criteria_dict_list):
                     value='Todo',
                     clearable=False,
                     id="owner_dropdown_selector",
+                )])),
+        ], width=2),
+
+        dbc.Col([
+            dbc.Row(dbc.Col([html.H3("Broker: ")])),
+            dbc.Row(dbc.Col(
+                [dcc.Dropdown(
+                    options=[option_dict['value'] for option_dict in broker_option_dict_list],
+                    value='Todo',
+                    clearable=False,
+                    id="broker_dropdown_selector",
                 )])),
         ], width=2),
 

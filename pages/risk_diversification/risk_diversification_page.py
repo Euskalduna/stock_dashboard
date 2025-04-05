@@ -28,24 +28,28 @@ def get_risk_diversification_page_callbacks(app):
     @app.callback(
         [Output({'type': 'data-panel', 'index': MATCH}, 'children')],
         [Input("owner_dropdown_selector", "value"),
+         Input("broker_dropdown_selector", "value"),
          Input("weight_dropdown_selector", "value")]
     )
-    def update_page_data(selected_options_owner, selected_options_weight):
+    def update_page_data(selected_options_owner, selected_options_broker, selected_options_weight):
         """
         Borra y vuelve a poner Generar los datos en función de los valores seleccionados en los INPUTs
         """
-        def get_filter_dict_list(owner_criteria_column):
-            filter_dict_list = [{'column_to_filter': 'Propietario', 'values_to_keep': [owner_criteria_column]}]
+        # def get_filter_dict_list(owner_criteria_column):
+        def get_filter_dict_list(*args):
+            filter_dict_list = []
+            for arg in args:
+                filter_dict_list.append(arg)
             return filter_dict_list
 
         def get_new_data_divs_to_draw(new_risk_diversification_div_list, risk_diversification_criteria_dict_list,
-                                      owner_criteria_column, weight_criteria_column, case_to_update):
+                                      owner_column_filter_dict, broker_column_filter_dict, weight_criteria_column, case_to_update):
             for risk_criteria_dict in risk_diversification_criteria_dict_list:
                 if case_to_update == risk_criteria_dict['criteria_name']:
                     # Get data by selected weight and criteria
                     purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
                     # Get criteria to filter by the DF
-                    filter_dict_list = get_filter_dict_list(owner_criteria_column)
+                    filter_dict_list = get_filter_dict_list(owner_column_filter_dict, broker_column_filter_dict)
                     # Get de div of each sector of the page (that is supposed to contain data)
                     panel_children = risk_diversification_body.get_panel(purchases_and_sales_enriched_df,
                                                                          risk_criteria_dict,
@@ -55,6 +59,10 @@ def get_risk_diversification_page_callbacks(app):
             return new_risk_diversification_div_list
 
         owner_criteria_column = selected_options_owner  # es el valor de una columna del DF ????
+        broker_criteria_column = selected_options_broker
+        owner_column_filter_dict = {'column_to_filter': 'Propietario', 'values_to_keep': [owner_criteria_column]}
+        broker_column_filter_dict = {'column_to_filter': 'Broker', 'values_to_keep': [broker_criteria_column]}
+
         weight_criteria_column = selected_options_weight  # es el valor de una columna del DF ????
         case_to_update = callback_context.outputs_grouping[0]['id']['index']
         # TODO: Esta variable tendria que conseguirla del context de la página de RISK DIVERSIFICATION pero no se como hacerlo, de momento, lo hardcodeo
@@ -70,7 +78,8 @@ def get_risk_diversification_page_callbacks(app):
         new_risk_diversification_div_list = []
         new_risk_diversification_div_list = get_new_data_divs_to_draw(new_risk_diversification_div_list,
                                                                       risk_diversification_criteria_dict_list,
-                                                                      owner_criteria_column,
+                                                                      owner_column_filter_dict,
+                                                                      broker_column_filter_dict,
                                                                       weight_criteria_column,
                                                                       case_to_update)
         return new_risk_diversification_div_list  # Esto tendria que ser una lista?? una lista de listas????

@@ -2,12 +2,14 @@ import pandas as pd
 
 
 def get_purchases_and_sales_log():
-    compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
+    compra_ventas_df = pd.read_csv("data/log_compra_venta.csv", decimal=",")
+    # compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
     return compra_ventas_df
 
 
 def get_company_info():
-    company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
+    company_info_df = pd.read_csv("data/info_empresas.csv", decimal=",")
+    # company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
     return company_info_df
 
 
