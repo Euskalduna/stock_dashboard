@@ -13,6 +13,10 @@ import dash_bootstrap_components as dbc
 def get_body_row(risk_diversification_criteria_dict_list, weight_criteria_column, page_grid_columns):
     # get the data to play with
     purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
+    print(purchases_and_sales_enriched_df.shape)
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
+    print(purchases_and_sales_enriched_df.shape)
 
     # get body_panel
     #necesito luego el nombre del criterio + el layout de su panel

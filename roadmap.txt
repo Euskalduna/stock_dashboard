@@ -51,6 +51,11 @@
 8- Hacer que los datos se cojan directamente de Gsheet en lugar de CSV                                          PENDIENTE
 9- Generar un .exe que abra la página esta                                                                      PENDIENTE   -----> Voy a ello!!
 10- Optimizar código / Modularizarlo                                                                            PENDIENTE
+    Especialmente, me interesa crear una estructura / plantilla para la forma en las que genero las páginas
+    Y una lógica en la que opera el código de cada una (que no todos los accesos sean desde cualquier archivo si no
+    que si, por ejemplo, quiero acceder a los datos, se tenga que pasar por un "controlador" o yo que se)
+    Igual me interesa crearme objetos???????
+
 11- Buscar como puedo modularizar en otros .pys los callbacks                                                   PENDIENTE
     mi intencion seria tener una carpeta "callbacks" y que tuvise un archivo llamado "risk_diversification_callbacks", etc.
     es decir, que el archivo se llama como la pagina en la que el callback tiene que operar
@@ -88,8 +93,18 @@
 
 
 # OBJETIVOS SIGUIENTES:
+0 - TODO URGENTE: tengo que aprender a hacer la variable "context" para llamar SOLO una vez a la API que utilice para sacar las cotizaciones
+    TODO URGENTE: la idea es que en el "context" tenga las CONSTANTES y que se genere la primera vez que se inicia el script (es decir, en el "my_main.py")
+    TODO URGENTE: cada vez que se inicia el script. Debería de ser de lo primero o lo primero.
+    TODO URGENTE: Además, cuando lo aprenda a usar, tengo que cambiar la forma de conseguir los datos de las cotizaciones en los archivos de "_data" para que
+    TODO URGENTE: utilicen el "context" en lugar de la API de Yahoo Finance.
+    TODO URGENTE: Lo de llamar solo 1 vez a la API me es muy necesario por la experiencia de usuario de la página + para no llegar al lmite de peticiones
+
+0.1- TODO URGENTE: hay que validar que lo que saco al utilizar los pesos por cotizacion tiene sentido
+
 1- Conseguir una API para sacar las cotizaciones de las empresas (en lugar de beber de la excel, que podría ser, pero como es asincrono no se si interesa...)
 1.1- En el selector de la pagina de diversificacion de riesgos, que las opciones de los pesos sean por dinero invertido y la otra por cotizacion de la empresa (necesito la API de la tarea anterior)
+1.2 - Uniformar los patrones de nomenclatura de las variables (esto puede afectar igual a la Excel para meter los datos, habría que ver cómo se hace para que la excel sea entendible por un USER y luego en el código sea fiel al patrón)
 2- Crear otra página que muestre la cartera actual
 3- Crear un sistema de paginado que permita alternar entre la página de las tartas y la página de la cartera
 4- Validar con usuario

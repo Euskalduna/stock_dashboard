@@ -48,6 +48,8 @@ def get_risk_diversification_page_callbacks(app):
                 if case_to_update == risk_criteria_dict['criteria_name']:
                     # Get data by selected weight and criteria
                     purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
+                    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
+                    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
                     # Get criteria to filter by the DF
                     filter_dict_list = get_filter_dict_list(owner_column_filter_dict, broker_column_filter_dict)
                     # Get de div of each sector of the page (that is supposed to contain data)
