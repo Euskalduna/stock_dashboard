@@ -37,7 +37,7 @@
         - Que en la leyenda las cosas aparezcan por orden ALFABETICO                                            PENDIENTE
         - Que si NO HAY ESPACIO, los porcentajes del quesito NO APAREZCAN                                       PENDIENTE
         - Deshabilitar las opciones que hacen que si te pones encima te aparezca el simbolo de plotly y el de descarga como PNG     PENDIENTE
-        - Que lo que aparece en la tarjeta flotante al posarte encima de un queso, tenga etiquetas USER FRIENDLY                    PENDIENTE
+        - Que lo que aparece en la tarjeta flotante al posarte encima de un queso, tenga etiquetas USER FRIENDLY                    (HECHO)
 
     - Ponerme con los colores                                                                                   (MAS O MENOS)
     - Ponerme con la fuente de las letras                                                                       (MAS O MENOS)
