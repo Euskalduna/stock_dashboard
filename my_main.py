@@ -1,7 +1,6 @@
 from utils.general_utils import *
-import utils.data_utils as data_utils
 import pages.risk_diversification.risk_diversification_page as risk_diversification_page
-from dash import Dash, Output, Input, State, MATCH, callback_context
+from dash import Dash
 import dash_bootstrap_components as dbc
 from dash_bootstrap_templates import load_figure_template
 
@@ -15,6 +14,7 @@ vizro_bootstrap = "https://cdn.jsdelivr.net/gh/mckinsey/vizro@main/vizro-core/sr
 app = Dash(__name__, external_stylesheets=[vizro_bootstrap, dbc.icons.FONT_AWESOME, dbc_css])
 # app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG, dbc.icons.FONT_AWESOME, dbc_css])
 load_figure_template(["vizro", "vizro_dark"])
+
 
 
 #
@@ -43,8 +43,8 @@ load_figure_template(["vizro", "vizro_dark"])
 # Cheatsheet https://hackerthemes.com/bootstrap-cheatsheet/
 
 # Genera la pagina base
-page_title_row, selector_row, content_row = risk_diversification_page.get_risk_diversification_page_layout()
-risk_diversification_page_children_list = [page_title_row, selector_row, content_row]
+page_title_row, warning_row, selector_row, content_row = risk_diversification_page.get_risk_diversification_page_layout()
+risk_diversification_page_children_list = [page_title_row, warning_row, selector_row, content_row]
 page_row = dbc.Row(dbc.Col(risk_diversification_page_children_list, className="page-base-div"))
 # Traigo los callbacks de la pagina
 risk_diversification_page.get_risk_diversification_page_callbacks(app)

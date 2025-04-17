@@ -75,7 +75,7 @@ def get_page_general_selector_row(risk_diversification_criteria_dict_list):
                 [dcc.Dropdown(
                     options=[
                         {'label': 'Dinero Invertido (Euros)', 'value': 'Dinero (EUR)'},
-                        {'label': 'Peso de Cotizacion (Euros)', 'value': 'latest_stock_value_in_euros'}
+                        {'label': 'Peso de Cotizacion (Euros)', 'value': 'Ultimo Valor (EUR)'}
                         # {'label': 'Peso de Cotizacion (Euros)', 'value': 'Dinero'}
                     ],
                     value='Dinero (EUR)',

@@ -19,6 +19,18 @@ def get_company_info():
     return company_info_df
 
 
+def get_purchases_and_sales():
+    purchases_and_sales_df = get_purchases_and_sales_log()
+    company_info_df = get_company_info()
+
+    purchases_and_sales_df['pk'] = purchases_and_sales_df['Mercado'].astype(str) + purchases_and_sales_df['Ticker'].astype(str)
+    company_info_df = company_info_df.rename(columns={'PK': 'pk'})
+    purchases_and_sales_enriched_df = purchases_and_sales_df.merge(
+        company_info_df[['pk', 'Sector', 'Moneda del mercado', 'Pais']],
+        how="left", on='pk')
+    return purchases_and_sales_enriched_df
+
+
 def get_risk_diversification_data(weight_criteria_column, risk_criteria_dict):
     def calculate_weight_by_group(df, group, weight_criteria):
         df_grouped = df.groupby(group).sum()[weight_criteria].reset_index().copy()

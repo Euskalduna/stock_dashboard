@@ -1,20 +1,7 @@
 import pandas as pd
 import numpy as np
 import utils.data_utils as data_utils
-
-
-
-
-def get_purchases_and_sales():
-    purchases_and_sales_df = data_utils.get_purchases_and_sales_log()
-    company_info_df = data_utils.get_company_info()
-
-    purchases_and_sales_df['pk'] = purchases_and_sales_df['Mercado'].astype(str) + purchases_and_sales_df['Ticker'].astype(str)
-    company_info_df = company_info_df.rename(columns={'PK': 'pk'})
-    purchases_and_sales_enriched_df = purchases_and_sales_df.merge(
-        company_info_df[['pk', 'Sector', 'Moneda del mercado', 'Pais']],
-        how="left", on='pk')
-    return purchases_and_sales_enriched_df
+from global_variables import context
 
 
 def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column, filter_dict_list=[]):
@@ -36,10 +23,10 @@ def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column
     # filter_dict_list = ['column_to_filter': 'Propietario', 'values_to_keep':[]]
 
     # Get the stocks latest values in each of the log's rows
-    company_info_df = purchases_and_sales_enriched_df[['Ticker', 'Mercado', 'Moneda del mercado']].drop_duplicates()
-    company_info_df = data_utils.get_companies_latest_stock_price(company_info_df)
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.merge(company_info_df, on=["Ticker", "Mercado"], how='left')
+    company_stock_prices_df = context['company_stock_prices_df'].copy()
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.merge(company_stock_prices_df, on=["Ticker", "Mercado"], how='left')
     purchases_and_sales_enriched_df['latest_stock_value_in_euros'] = purchases_and_sales_enriched_df.apply(lambda row: calculate_stock_value(row['Acciones'], row['latest_stock_price_in_euros']), axis=1)
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.rename({'latest_stock_value_in_euros': 'Ultimo Valor (EUR)'}, axis=1)
 
     for filter_dict in filter_dict_list:
         column_to_filter = filter_dict['column_to_filter']
