@@ -1,10 +1,10 @@
 from dash import dcc
 from dash.dash_table import DataTable
 from dash.dash_table.Format import Format, Group
-import locale
 
-import pages.risk_diversification.risk_diversification_data as risk_diversification_data
+import utils.data_utils as data_utils
 import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
+import pages.risk_diversification.risk_diversification_data as risk_diversification_data
 import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
 import plotly.express as px
 import dash_bootstrap_components as dbc
@@ -12,7 +12,11 @@ import dash_bootstrap_components as dbc
 
 def get_body_row(risk_diversification_criteria_dict_list, weight_criteria_column, page_grid_columns):
     # get the data to play with
-    purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
+    purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales()
+    print(purchases_and_sales_enriched_df.shape)
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
+    print(purchases_and_sales_enriched_df.shape)
 
     # get body_panel
     #necesito luego el nombre del criterio + el layout de su panel

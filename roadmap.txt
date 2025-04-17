@@ -1,56 +1,31 @@
 # OBJETIVOS:
-1- Poner tabla                                                                                                  (HECHO)
-2- Poner botón para mostrar/ocultar tabla                                                                       (HECHO)
-3- Poner botón para mostrar/ocultar tarta                                                                       (HECHO)
-4- Poner ELEMENTO para mostrar / ocultar panel                                                                  (HECHO)
-5- Poner ELEMENTO para alternar en el QUÉ da los pesos                                                          (HECHO)
-6- Dar comportamiento y que funcione
-    - pulsar en un boton de ocultar/mostrar panel oculta / muestra panel + hace que se redimensionen correctamente los componentes  (HECHO)
-
-    - EN VEZ DE BOTON TENER UNA CHECKLIST DE 2 OPCIONES???? en lugar de los botones que pongo debajo digo                           (HECHO)
-    - pulsar en un botón de ocultar/mostrar tarta oculta / muestra la tarta + hace que se redimensionen                             (HECHO)
-    correctamente los componentes (se ha intentado, hay bug porque los callbacks no los domino)
-
-    - seleccionar una opcion de los pesos u otra altera los cálculos y actualiza los datos de las tablas y graficos                 (HECHO)
-
-# TODO: cambiar los datos para que sean los adecuados
-    En Peso por dinero invertido --> cambiar para que no vaya por ticker si no por NOMBRE
-    En Peso por cotizacion --> cambiar para que los valores sean de verdad por cotización
-    mover los callbacks a otro fichero independiente y que se importen en el archivo que trae la pagina
-
 7- Pintar la página como a mi me guste (colores, tamaños de letra, margenes, iconos...)
     - Hacer que las tablas tengan
-        - un limite de registros por pagina (10 o 15) (no vayan para abajo hacia la infinidad)                  (HECHO)
-        - paginacion                                                                                            (HECHO)
-        - La primera linea (la de los titulos), que tenga un color distinto a las del cuerpo                    (HECHO)
-        - Quitarle  la columna "Weight"                                                                         (HECHO)
-        - Hacer que los numeros aparecezcan con . de miles                                                      (HECHO)
-        - Hacer que los numeros aparezcan con , de decimales                                                    (HECHO)
-        - Renombrar las columnas para que tengan titulos  USER FRIENDLY                                         (HECHO)
         - Hacer que las tablas tengan todas un mismo tamaño o si no lo tienen, que                              PENDIENTE
         la paginación al pasar a una página más pequeña NO me cambie el tamaño de la tabla
-        - Hacer que las tablas se puedan ordenar por el criterio que quiera                                     (HECHO)
         - Hacer que las tablas se puedan filtrar por columna                                                    PENDIENTE
+        - Hacer que las columnas de las tablas tengan un ancho máximo                                           PENDIENTE
 
     - Hacer que las tartas:
-        - Para la Empresa utilicen el nombre de la empresa y no el Ticker                                       (HECHO)
         - Que en la leyenda las cosas aparezcan por orden ALFABETICO                                            PENDIENTE
         - Que si NO HAY ESPACIO, los porcentajes del quesito NO APAREZCAN                                       PENDIENTE
         - Deshabilitar las opciones que hacen que si te pones encima te aparezca el simbolo de plotly y el de descarga como PNG     PENDIENTE
-        - Que lo que aparece en la tarjeta flotante al posarte encima de un queso, tenga etiquetas USER FRIENDLY                    (HECHO)
-
+        - Que lo que aparece en la tarjeta flotante al posarte encima de un queso, use . de miles y , para decimales                PENDIENTE
     - Ponerme con los colores                                                                                   (MAS O MENOS)
     - Ponerme con la fuente de las letras                                                                       (MAS O MENOS)
     - Ponerme con el tamaño de las letras                                                                       (MAS O MENOS)
-    - Ponerme con la separacion (margenes) de los componentes                                                   (HECHO)
-    - Me gustaria que cada cuadrante esté dentro de un DIV con otro color del fondo principal                   (HECHO)
     El color podría ser este #232632
     El cuadrante tiene que tener los bordes redondeados
     y tener un margen por TODOS lados (no se de cuanto, pero ha de ser una medida relativa no absoluta)
 
 8- Hacer que los datos se cojan directamente de Gsheet en lugar de CSV                                          PENDIENTE
-9- Generar un .exe que abra la página esta                                                                      PENDIENTE   -----> Voy a ello!!
+9- Generar un .exe que abra la página esta                                                                      PENDIENTE
 10- Optimizar código / Modularizarlo                                                                            PENDIENTE
+    Especialmente, me interesa crear una estructura / plantilla para la forma en las que genero las páginas
+    Y una lógica en la que opera el código de cada una (que no todos los accesos sean desde cualquier archivo si no
+    que si, por ejemplo, quiero acceder a los datos, se tenga que pasar por un "controlador" o yo que se)
+    Igual me interesa crearme objetos???????
+
 11- Buscar como puedo modularizar en otros .pys los callbacks                                                   PENDIENTE
     mi intencion seria tener una carpeta "callbacks" y que tuvise un archivo llamado "risk_diversification_callbacks", etc.
     es decir, que el archivo se llama como la pagina en la que el callback tiene que operar
@@ -88,8 +63,10 @@
 
 
 # OBJETIVOS SIGUIENTES:
+0.1- TODO URGENTE: hay que validar que lo que saco al utilizar los pesos por cotizacion tiene sentido
+
 1- Conseguir una API para sacar las cotizaciones de las empresas (en lugar de beber de la excel, que podría ser, pero como es asincrono no se si interesa...)
-1.1- En el selector de la pagina de diversificacion de riesgos, que las opciones de los pesos sean por dinero invertido y la otra por cotizacion de la empresa (necesito la API de la tarea anterior)
+1.2 - Uniformar los patrones de nomenclatura de las variables (esto puede afectar igual a la Excel para meter los datos, habría que ver cómo se hace para que la excel sea entendible por un USER y luego en el código sea fiel al patrón)
 2- Crear otra página que muestre la cartera actual
 3- Crear un sistema de paginado que permita alternar entre la página de las tartas y la página de la cartera
 4- Validar con usuario

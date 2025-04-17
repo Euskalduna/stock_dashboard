@@ -1,27 +1,24 @@
-from dash import Dash, Output, Input, State, MATCH, callback_context
+from dash import Output, Input, State, MATCH, callback_context
 import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
+import pages.risk_diversification.risk_diversification_warnings as risk_diversification_warnings
 import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
 import pages.risk_diversification.risk_diversification_body as risk_diversification_body
-import pages.risk_diversification.risk_diversification_data as risk_diversification_data
+import utils.data_utils as data_utils
+from global_variables import context
+
 
 def get_risk_diversification_page_layout():
     # Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
     page_grid_columns = 1  # Esto lo pongo a mano
     default_weight_criteria_column = 'Dinero (EUR)'
-    risk_diversification_criteria_dict_list = [
-        # {'criteria_name': 'empresa', 'data_column': 'Ticker', 'diversification_div': ''},
-        {'criteria_name': 'empresa', 'data_column': 'Nombre Empresa', 'diversification_div': ''},
-        {'criteria_name': 'sector', 'data_column': 'Sector', 'diversification_div': ''},
-        {'criteria_name': 'pais', 'data_column': 'Pais', 'diversification_div': ''},
-        {'criteria_name': 'moneda', 'data_column': 'Moneda del mercado', 'diversification_div': ''},
-    ]
+    risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
     page_title = "Diversifiación de Riesgos"
 
     page_title_row = risk_diversification_titles.get_page_title_row(page_title)
+    warning_row = risk_diversification_warnings.get_page_empty_warning_row()
     selector_row = risk_diversification_selectors.get_page_general_selector_row(risk_diversification_criteria_dict_list)
-    # selector_row = risk_diversification_selectors.get_test_checklist() # ESTO ES UN TEST!!!
     body_row = risk_diversification_body.get_body_row(risk_diversification_criteria_dict_list, default_weight_criteria_column, page_grid_columns)
-    return [page_title_row, selector_row, body_row]
+    return [page_title_row, warning_row, selector_row, body_row]
 
 
 def get_risk_diversification_page_callbacks(app):
@@ -47,7 +44,9 @@ def get_risk_diversification_page_callbacks(app):
             for risk_criteria_dict in risk_diversification_criteria_dict_list:
                 if case_to_update == risk_criteria_dict['criteria_name']:
                     # Get data by selected weight and criteria
-                    purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
+                    purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales()
+                    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
+                    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
                     # Get criteria to filter by the DF
                     filter_dict_list = get_filter_dict_list(owner_column_filter_dict, broker_column_filter_dict)
                     # Get de div of each sector of the page (that is supposed to contain data)
@@ -65,15 +64,7 @@ def get_risk_diversification_page_callbacks(app):
 
         weight_criteria_column = selected_options_weight  # es el valor de una columna del DF ????
         case_to_update = callback_context.outputs_grouping[0]['id']['index']
-        # TODO: Esta variable tendria que conseguirla del context de la página de RISK DIVERSIFICATION pero no se como hacerlo, de momento, lo hardcodeo
-        risk_diversification_criteria_dict_list = [
-            # {'criteria_name': 'empresa', 'data_column': 'Ticker'},
-            {'criteria_name': 'empresa', 'data_column': 'Nombre Empresa'},
-            {'criteria_name': 'sector', 'data_column': 'Sector'},
-            {'criteria_name': 'pais', 'data_column': 'Pais'},
-            {'criteria_name': 'moneda', 'data_column': 'Moneda del mercado'},
-        ]
-
+        risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
         # Get the new data to draw in the browser
         new_risk_diversification_div_list = []
         new_risk_diversification_div_list = get_new_data_divs_to_draw(new_risk_diversification_div_list,
@@ -84,33 +75,23 @@ def get_risk_diversification_page_callbacks(app):
                                                                       case_to_update)
         return new_risk_diversification_div_list  # Esto tendria que ser una lista?? una lista de listas????
 
-    # @app.callback(
-    #     [Output({'type': 'data-panel', 'index': MATCH}, 'children')],
-    #     [Input("weight_dropdown_selector", "value")]
-    # )
-    # def update_page_data_by_weight(selected_options):
-    #     weight_criteria_column = selected_options  # es el nombre de una columna del DF
-    #     case_to_update = callback_context.outputs_grouping[0]['id']['index']
-    #
-    #     #TODO: Esta variable tendria que conseguirla del context de la página de RISK DIVERSIFICATION pero no se como hacerlo, de momento, lo hardcodeo
-    #     risk_diversification_criteria_dict_list = [
-    #         # {'criteria_name': 'empresa', 'data_column': 'Ticker'},
-    #         {'criteria_name': 'empresa', 'data_column': 'Nombre Empresa'},
-    #         {'criteria_name': 'sector', 'data_column': 'Sector'},
-    #         {'criteria_name': 'pais', 'data_column': 'Pais'},
-    #         {'criteria_name': 'moneda', 'data_column': 'Moneda del mercado'},
-    #     ]
-    #
-    #     new_risk_diversification_div_list = []
-    #     for risk_criteria_dict in risk_diversification_criteria_dict_list:
-    #         if case_to_update == risk_criteria_dict['criteria_name']:
-    #             # Get data by selected weight and criteria
-    #             purchases_and_sales_enriched_df = risk_diversification_data.get_purchases_and_sales()
-    #             # Get de div of each sector of the page (that is supposed to contain data)
-    #             panel_children = risk_diversification_body.get_panel(purchases_and_sales_enriched_df, risk_criteria_dict, weight_criteria_column)  # Esto va a devolver un [elemento, elemento2, elemento3]
-    #             new_risk_diversification_div_list.append(panel_children)
-    #
-    #     return new_risk_diversification_div_list  # Esto tendria que ser una lista?? una lista de listas????
+    @app.callback(
+        [Output("page_warning_row", 'children')],
+        [Input("weight_dropdown_selector", "value")]
+    )
+    def update_page_warning_row(selected_options_weight):
+        """
+        Borra o inserta un texto en la linea de "Warnings" general de la página
+        """
+        weight_criteria_column = selected_options_weight  # es el valor de una columna del DF ????
+        #case_to_update = callback_context.outputs_grouping[0]['id']['index']
+        print(weight_criteria_column)
+
+        warning_col = risk_diversification_warnings.get_empty_warning_col()
+        if weight_criteria_column == "Ultimo Valor (EUR)":
+            text = "ADVERTENCIA: los precios de las acciones tienen un RETRASO DE 1 O 2 DÍAS, por ser de la API de Yahoo y gratis"
+            warning_col = risk_diversification_warnings.get_warning_col(text)
+        return [warning_col]
 
     @app.callback(
         [Output({'type': 'data-panel', 'index': MATCH}, 'className')],
