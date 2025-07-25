@@ -1,31 +1,77 @@
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import plotly.express as px
+from dash import dcc
+from dash import html
+from dash.dependencies import Input, Output
+import dash_table
+import pandas as pd
 
 app = dash.Dash(__name__)
 
-# Sample data for the pie chart
-data = {'labels': ['Category A', 'Category B', 'Category C'],
-        'values': [30, 45, 25]}
+# Sample data for the DataTable
+data = {
+    'Column 1 with a very long header title': ['Short content', 'Another short one'],
+    'Column 2': ['Content that is long and needs to wrap around.', 'More content that is also quite long to test the wrapping feature.'],
+    'Column 3': ['Short', 'VeryLongWordThatMightNotWrapProperlyWithoutSpaces']
+}
+df = pd.DataFrame(data)
 
-# Create the pie chart figure
-fig = px.pie(data, values='values', names='labels')
-
-# Update the hovertemplate for larger pop-ups
-fig.update_traces(hovertemplate='<b>%{label}</b> (%{percent}) <br> Dinero(EUR): %{value}')
-
-# Update the layout to position the legend and increase hoverinfo font size
-fig.update_layout(
-    legend=dict(x=1, y=0.5),  # Adjust x and y values as needed
-    hoverlabel=dict(font_size=16)  # Adjust font size as desired
-)
-
-app.layout = html.Div(children=[
-    html.H1(children="Pie Chart with Larger Hover Pop-ups"),
-    dcc.Graph(id='pie-chart', figure=fig)
+app.layout = html.Div([
+    html.H1("Datatable with Dynamic Column Width and Text Wrapping"),
+    dash_table.DataTable(
+        id='datatable-interactivity',
+        columns=[
+            {"name": i, "id": i} for i in df.columns
+        ],
+        data=df.to_dict('records'),
+        editable=True,
+        filter_action="native",
+        sort_action="native",
+        sort_mode="multi",
+        column_selectable="single",
+        row_selectable="multi",
+        row_deletable=True,
+        selected_columns=[],
+        selected_rows=[],
+        page_action="native",
+        page_current=0,
+        page_size=10,
+        style_cell={
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+            'maxWidth': 150, # Adjust this value as the threshold for wrapping
+            'whiteSpace': 'normal' # This allows text to wrap
+        },
+        style_header={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+            'fontWeight': 'bold'
+        },
+        # Auto-width based on content (header or body)
+        style_data_conditional=[
+            {
+                'if': {'column_id': col},
+                'minWidth': '100px',  # Minimum width
+                'width': 'auto',
+                'maxWidth': '300px', # Maximum width before wrapping
+            } for col in df.columns
+        ]
+    ),
+    html.Div(id='datatable-interactivity-container')
 ])
+
+@app.callback(
+    Output('datatable-interactivity-container', 'children'),
+    Input('datatable-interactivity', 'data'),
+    Input('datatable-interactivity', 'columns'))
+def display_output(rows, columns):
+    if rows:
+        return html.Div([
+            html.H3('Selected Data'),
+            dash_table.DataTable(
+                data=rows,
+                columns=[{"name": i, "id": i} for i in columns]
+            )
+        ])
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-

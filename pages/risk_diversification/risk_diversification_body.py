@@ -12,7 +12,7 @@ import dash_bootstrap_components as dbc
 
 def get_body_row(risk_diversification_criteria_dict_list, weight_criteria_column, page_grid_columns):
     # get the data to play with
-    purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales()
+    purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
     print(purchases_and_sales_enriched_df.shape)
     purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
     purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
@@ -35,7 +35,7 @@ def get_body_row(risk_diversification_criteria_dict_list, weight_criteria_column
             is_new_row_required = ((index + 1) % page_grid_columns == 0) or is_last_risk_criteria
 
             col_id = f"diversification_by_{risk_criteria_dict['criteria_name']}_col"
-            col_id = {'type': 'data-panel', 'index': risk_criteria_dict['criteria_name']}
+            col_id = {'type': 'risk-diversification-data-panel', 'index': risk_criteria_dict['criteria_name']}
 
             column_by_row_list.append(dbc.Col(risk_criteria_dict['diversification_panel_children'], id=col_id, className="data-div"))
 
@@ -92,7 +92,7 @@ def get_risk_diversification_pie_chart(risk_criteria_name, weight_by_criteria_df
         weight_by_criteria_df,
         values=data_column,
         names=group_by_column,
-        template="vizro_dark"
+        # template="vizro_dark"
         # template="plotly_dark"
     )
 

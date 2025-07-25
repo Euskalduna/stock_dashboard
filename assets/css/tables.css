@@ -1,58 +1,103 @@
-/* Estilo de las tablas que tienen como ID = "ris-diversification-table" */
-/*
-El estilo base lo he sacado de esta página
-https://github.com/mckinsey/vizro/blob/main/vizro-core/src/vizro/static/css/table.css
-Pero lo he cosutomizado
-*/
+/* --- General Body and Font Styling --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background-color: #f0f2f5;
+}
 
+/* --- Card Styling --- */
+.card {
+    border: 1px solid #ddd;
+    box-shadow: none;
+    border-radius: 0.375rem !important;
+}
 
-#risk-diversification-table th {
-/* Cambia las celdas de los titulos*/
-    /*background-color: inherit;*/
-    background-color: #0c0f2e; /* El color de background #0c0f2e para los titulos y el color de background #122036 para el cuerpo está OK pero se puede mejorar*/
-    color: white;
-    font-weight: bold;
-    /*color: var(--text-primary);*/
+/* --- Header Styling --- */
+h1 {
+    color: #000;
+    font-weight: 700;
+}
+
+/* --- Custom Pivot Table Styling --- */
+.custom-pivot-table {
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    border: 1px solid #999;
+}
+
+/* --- Table Header --- */
+.custom-pivot-table thead th {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: 700;
+    vertical-align: middle !important;
+    border-bottom: 2px solid #555 !important;
+    padding: 1rem 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    /* --- CHANGE HERE --- */
+    text-align: right; /* Align column headers to the right with the data */
+}
+
+/* Special rule for the very first header cell (top-left) */
+.custom-pivot-table thead th:first-child {
+    /* --- CHANGE HERE --- */
+    text-align: left; /* Keep the top-left corner header left-aligned */
+}
+
+/* --- Table Body Cells (Data) --- */
+.custom-pivot-table tbody td {
+    background-color: #ffffff;
+    vertical-align: middle !important;
+    padding: 0.85rem 1.25rem; /* Added more horizontal padding */
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-weight: 500;
+    color: #212529;
+    /* --- CHANGE HERE --- */
+    text-align: right; /* Align all data cells to the right */
+}
+
+/* --- Row Headers (Labels) --- */
+.custom-pivot-table tbody th {
+    background-color: #e9ecef;
+    font-weight: 700;
+    color: #000;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #ccc;
+    border-right: 2px solid #adb5bd;
+    padding: 0.85rem 1.25rem;
+    /* --- CHANGE HERE --- */
+    text-align: left; /* Align row labels to the left */
 }
 
 
-#risk-diversification-table td {
-/* Cambia las celdas de los cuerpos*/
-    /*background-color: inherit;*/
-    background-color: #122036;
-    color: white;
-    /*color: var(--text-primary);*/ /*No se que hace*/
-
-    height: 1.5rem !important;
+/* --- NEW RULE FOR VERTICAL LINES --- */
+/* Add a subtle right border to all header and data cells except the last one in a row */
+.custom-pivot-table thead th:not(:last-child),
+.custom-pivot-table tbody td:not(:last-child) {
+    border-right: 1px solid black; /* A light, subtle line color */
 }
 
-/*
-#dashboard-container .dash-spreadsheet-inner table {
-    --hover: inherit;
+
+/* --- Striped Rows --- */
+.table-striped tbody tr:nth-of-type(odd) td {
+    background-color: #f1f3f5;
 }
-*/
-
-/* Styling for pagination element */
-
-/*
-#dashboard-container .first-page,
-#dashboard-container .previous-page,
-#dashboard-container .next-page,
-#dashboard-container .last-page {
-  background: inherit;
-  color: var(--text-secondary);
+.table-striped tbody tr:nth-of-type(odd) th {
+    background-color: #e0e5e9;
 }
 
-#dashboard-container input.current-page,
-.table-container input.current-page::placeholder {
-  background: inherit;
-  color: var(--text-primary) !important;
+/* --- Hover Effect --- */
+.table-hover tbody tr:hover td {
+    background-color: rgba(13, 110, 253, 0.2);
 }
-
-#dashboard-container button.first-page:hover,
-#dashboard-container button.previous-page:hover,
-#dashboard-container button.next-page:hover,
-#dashboard-container button.last-page:hover {
-  color: var(--text-primaryHover) !important;
+.table-hover tbody tr:hover th {
+    background-color: rgba(13, 110, 253, 0.3);
 }
-*/
+.table-hover tbody tr:hover {
+    transition: background-color 0.1s ease-in-out;
+}
