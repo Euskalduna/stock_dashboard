@@ -56,7 +56,10 @@
 
 
 
-
+# TODO: SOLUCIONAR PROBLEMA:
+# TODO: En la pantalla de los graficos de tarta (pagina de Risk_diversification) si cambio los pesos
+# TODO: por "dinero invertido", creo que estoy seleccionando la columna equivocada o haciendo mal los cálculos
+# TODO: porque con los datos de AITA me da que CK Hutchinson pesa 65.700 euros, entindo que eso serán Hongkong dolars o así.
 
 
 
@@ -75,3 +78,4 @@
 # OBJETIVOS SIGUIENTES SIGUIENTES:
 1- Crear la siguiente página (no sé cual es)
 2- Crear la siguiente página (no sé cual es)
+#TODO: debo estandarizar la nomenclatura de los IDs

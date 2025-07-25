@@ -59,7 +59,7 @@ def get_risk_diversification_div(weight_criteria, risk_criteria_dict, weight_by_
         weight_by_criteria_df,
         values=weight_criteria,
         names=risk_criteria_dict['data_column'],
-        template="vizro_dark"
+        # template="vizro_dark"
         # template="plotly_dark"
     )
     weight_by_criteria_pie_chart.update_layout(legend={'x': 1, 'y': 0.5})
