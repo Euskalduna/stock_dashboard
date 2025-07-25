@@ -1,5 +1,5 @@
 import pandas as pd
-from dash import Dash, html, dcc, dash_table, Output, Input, State, MATCH, ALL, callback_context
+from dash import Dash, html, dcc, dash_table, Output, Input, State, MATCH, ALL, callback_context, page_registry,page_container
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import math
@@ -16,32 +16,16 @@ import math
 def get_sidebar_menu():
     sidebar_menu_div = html.Div(
         [
-            dbc.Collapse(
-                dbc.Card(
-                    dbc.CardBody(
-                        [
-                            html.H2("Menu", className="display-4"),
-                            html.Hr(),
-                            html.P('This is a test'),
-                            # dbc.Nav(
-                            #     [
-                            #         dbc.Navlink o link 1
-                            #         dbc.Navlink o link 2
-                            #         dbc.Navlink o link 3
-                            #     ],
-                            #     vertical=True,
-                            #     pills=True
-                            # )
-                        ],
-                        # className="h-100 "
-                    ),
-                    className="h-100"
-                ),
-                is_open=True,
-                dimension="width",
-                className="h-100 bg-primary"
+            html.H1("Paginas"),
+            dbc.Nav(
+                [
+                    dbc.NavLink(page["name"], href=page["relative_path"], active="exact") for page in page_registry.values()
+                ],
+                vertical=True,
+                pills=True,
             )
         ],
-        className="h-100 bg-danger"
+        #className="p-4 bg-light",  # Add some padding and a light background
     )
+
     return sidebar_menu_div
