@@ -61,6 +61,7 @@
 # TODO: por "dinero invertido", creo que estoy seleccionando la columna equivocada o haciendo mal los cálculos
 # TODO: porque con los datos de AITA me da que CK Hutchinson pesa 65.700 euros, entindo que eso serán Hongkong dolars o así.
 
+# TODO: sustituir los datatables por un "dash-ag-grid" ??????????
 
 
 

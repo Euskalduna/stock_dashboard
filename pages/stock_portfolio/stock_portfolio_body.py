@@ -3,6 +3,7 @@ from dash.dash_table import DataTable
 from dash.dash_table.Format import Format, Group, Scheme
 
 import utils.data_utils as data_utils
+import utils.table_utils as table_utils
 import pages.stock_portfolio.stock_portfolio_data as stock_portfolio_data
 import pages.stock_portfolio.stock_portfolio_titles as stock_portfolio_titles
 import pages.stock_portfolio.stock_portfolio_selectors as stock_portfolio_selectors
@@ -89,17 +90,26 @@ def get_stock_portfolio_table(stock_portfolio_df, non_numeric_column_list):
     # table_columns = [{"name": i, "id": i} for i in weight_by_criteria_df.columns]
     table_columns = get_configurated_table_columns(stock_portfolio_df, non_numeric_column_list)
 
+    style_header = table_utils.get_default_style_header()
+    style_data = table_utils.get_default_style_data()
+    style_data['whiteSpace'] = 'normal'
+    style_data['height'] = 'auto'
+    style_data_conditional = table_utils.get_default_style_data_conditional()
+    style_table = table_utils.get_default_style_table()
+    style_table['overflowX'] = 'auto'
+    style_cell = {"minWidth": 150}
+
     weight_by_criteria_table_html_component = DataTable(data=table_data,
                                                         columns=table_columns,
                                                         page_size=15,
                                                         # filter_action="native",
                                                         sort_action="native",
                                                         id="stock-portfolio-table",
-                                                        style_table={'overflowX': 'auto'},
-                                                        style_data={"whiteSpace": "normal", "height": "auto"},
-                                                        style_header={"whiteSpace": "normal",
-                                                                      "height": "auto"},
-                                                        style_cell={"minWidth": 100}
+                                                        style_header=style_header,
+                                                        style_data=style_data,
+                                                        style_data_conditional=style_data_conditional,
+                                                        style_table=style_table,
+                                                        style_cell=style_cell,
+                                                        # fixed_columns={'headers': True, 'data': 1},
                                                         )
-
     return weight_by_criteria_table_html_component
