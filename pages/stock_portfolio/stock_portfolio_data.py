@@ -26,7 +26,7 @@ def get_stock_portfolio_data(filter_dict_list=[], columns_to_keep_list=[], user_
     stock_portfolio_df = purchases_and_sales_enriched_df.groupby(['Mercado', 'Ticker', 'Nombre Empresa']).sum()[['Acciones', 'Dinero', 'Dinero (EUR)', 'Dinero pagado en Comisión', 'Dinero pagado en comisión (EUR)']]
     ## I re-add certain lost columns that are important to keep and others that I want to keep
     stock_portfolio_df = stock_portfolio_df.reset_index()
-    # AQUI!!
+
     stock_portfolio_df = stock_portfolio_df.merge(purchases_and_sales_enriched_df[['Ticker', 'Mercado', "ISIN", "Moneda del mercado", "Pais", "REIT", "Sector", "Meses Pago Dividendos"]], on=['Ticker', 'Mercado'])
     stock_portfolio_df = stock_portfolio_df.drop_duplicates()
     ## Get the statistics of the invested money

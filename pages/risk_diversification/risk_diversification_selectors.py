@@ -68,7 +68,6 @@ def get_page_general_selector_row(risk_diversification_criteria_dict_list):
             )),
         ], width=2),
 
-        # TODO: Cuando tenga la forma de scar los pesos por cotizacion, QUITAR LA CLASSNAME="d-none"!!!
         dbc.Col([
             dbc.Row(dbc.Col([html.H3("Peso: ")])),
             dbc.Row(dbc.Col(
@@ -90,7 +89,7 @@ def get_page_general_selector_row(risk_diversification_criteria_dict_list):
             inline=True,
             value=[option_dict['value'] for option_dict in diversification_option_dict_list],
             id="diversification_section_checklist",
-            labelStyle={'display': 'inline-block', 'margin-right': '2%', 'padding-right': '1%'})
+            labelStyle={'display': 'inline-block', 'marginRight': '2%', 'paddingRight': '1%'})
         ], width=3)
     ], className="selector-div")
     return selector_row

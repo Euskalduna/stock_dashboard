@@ -1,20 +1,62 @@
-.data-div {
-    background-color: grey;
-    border-radius: 1.5%;
-    margin: 0.5%;
-    padding: 1%
+.bg-black {
+    background-color: black;
+}
+.bg-white {
+    background-color: white;
 }
 
 .page-base-div {
-    margin: 1%
+    background-color: #e9e8eb;
+    /*
+    margin: 1%;
+    background-color: #cfe2ff;
+    background-color: #cff4fc;
+    background-color: #f8f9fa;
+    background-color: #e9ecef;
+    */
 }
 
 .selector-div {
     margin-top: 0.5%;
     margin-bottom: 0.5%;
+    padding: 1%;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.data-div {
+    background-color: white;
+    border-radius: 20px;
+    margin: 0.5%;
+    padding: 1%
 }
 
 .mild-warning-div {
     padding: 0.5%;
     background-color: #d9880f;
 }
+
+
+.nav-link {
+    color: black !important; /* Forces the text color to black */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover/active states */
+}
+
+/* Style for the selected (active) nav-link element: white letters and black background */
+.nav-link.active {
+    background-color: black !important; /* Forces the background to black */
+    color: white !important; /* Forces the text color to white */
+    border-radius: 0.25rem; /* Adds a slight rounded corner, common in Bootstrap */
+    padding: 0.5rem 1rem; /* Ensures consistent padding with default Bootstrap nav-links */
+}
+
+/* Optional: Style for hover state (when not active) */
+.nav-link:not(.active):hover {
+    background-color: #dee2e6; /* A light grey background on hover for non-active links */
+    color: #333 !important; /* Keeps text dark on hover */
+}
+
+
+/*
+font-sans-serif
+*/
