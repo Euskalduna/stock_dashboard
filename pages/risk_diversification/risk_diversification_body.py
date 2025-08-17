@@ -3,6 +3,7 @@ from dash.dash_table import DataTable
 from dash.dash_table.Format import Format, Group
 
 import utils.data_utils as data_utils
+import utils.table_utils as table_utils
 import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
 import pages.risk_diversification.risk_diversification_data as risk_diversification_data
 import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
@@ -110,7 +111,9 @@ def get_risk_diversification_pie_chart(risk_criteria_name, weight_by_criteria_df
     )
     weight_by_criteria_pie_chart.update_traces(hovertemplate=pop_up_text_html)
     weight_by_criteria_pie_chart.update_layout(legend=legend_format_dict,
-                                               hoverlabel=pop_up_format_dict)
+                                               hoverlabel=pop_up_format_dict,
+                                               paper_bgcolor='rgba(0,0,0,0)',  # Quita el background de la grafica
+                                               plot_bgcolor='rgba(0,0,0,0)')
     weight_by_criteria_pie_chart_html_component = dcc.Graph(id=pie_chart_id,
                                                             figure=weight_by_criteria_pie_chart)
     return weight_by_criteria_pie_chart_html_component
@@ -138,12 +141,20 @@ def get_risk_diversification_table(weight_by_criteria_df, group_by_column):
     # table_columns = [{"name": i, "id": i} for i in weight_by_criteria_df.columns]
     table_columns = get_configurated_table_columns(weight_by_criteria_df, group_by_column)
 
+    style_header = table_utils.get_default_style_header()
+    style_data = table_utils.get_default_style_data()
+    style_data_conditional = table_utils.get_default_style_data_conditional()
+    style_table = table_utils.get_default_style_table()
+
     weight_by_criteria_table_html_component = DataTable(data=table_data,
                                                         columns=table_columns,
                                                         page_size=15,
                                                         # filter_action="native",
                                                         sort_action="native",
                                                         id="risk-diversification-table",
-                                                        style_data={'whiteSpace': 'normal', 'height': 'auto'}
+                                                        style_header=style_header,
+                                                        style_data=style_data,
+                                                        style_data_conditional=style_data_conditional,
+                                                        style_table=style_table
                                                         )
     return weight_by_criteria_table_html_component

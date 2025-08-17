@@ -53,19 +53,20 @@ sidebar_menu_div = get_sidebar_menu()
 # Uno los 2 elementos (side menu y la pagina base)
 container_row = dbc.Row([
     dcc.Store(id="sidebar-state", data=True),
-    dbc.Col([sidebar_menu_div], id="sidebar-column", width=2, className="bg-light"),
+    dbc.Col([sidebar_menu_div], id="sidebar-column", width=2, className="bg-white"),
     dbc.Col(
         [
-            dbc.Button(html.I(className="bi bi-list"), id="sidebar-toggle", n_clicks=0, className="mb-3"),
+            dbc.Button(html.I(className="bi bi-list"), id="sidebar-toggle", n_clicks=0, className="mb-3 bg-black"),
             page_container
         ],
         id="page-content-column",
         width=10,
         className="p-4"
     ),
-], className="g-0",)
+], className="",)
+# ], className="g-0",)
 # Añado los elementos en la página
-app.layout = dbc.Container(children=[container_row], className="dbc", fluid=True)
+app.layout = dbc.Container(children=[container_row], className="dbc page-base-div", fluid=True)
 
 
 @callback(

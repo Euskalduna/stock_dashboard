@@ -38,7 +38,7 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
         # TODO: hacer algo para que esto sea dinamico y no esté Hardcodeado!!!!!
         # Columns that I want to keep but I want them to be the FIRST in the showed table
         always_to_keep_column_list_part_1 = [
-            "Mercado", "Ticker", "Nombre Empresa", "Acciones",
+            "Nombre Empresa", "Mercado", "Ticker", "Acciones",
         ]
         if currency_criteria_column == "Euro":
             currency_columns_list = [
@@ -61,9 +61,9 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
 
     def get_user_column_names():
         user_column_names_dict = {
+            'Nombre Empresa': 'Nombre',
             'Ticket': 'Ticket',
             'Mercado': 'Mercado',
-            'Nombre Empresa': 'Nombre',
             'Acciones': 'Acciones',
             'Dinero (EUR)': 'Dinero (EUR)',
             'Dinero pagado en comisión (EUR)': 'Dinero pagado en comisión (EUR)',

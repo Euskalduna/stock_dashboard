@@ -8,5 +8,5 @@ def get_page_title_row(title):
 
 
 def get_page_common_panel_title_row(title):
-    title_row = dbc.Row([dbc.Col([html.H2(title)])])
+    title_row = dbc.Row([dbc.Col([html.H2(title, className="fw-bold")])])
     return title_row
