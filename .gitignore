@@ -2,3 +2,6 @@ data/*.csv
 venv/
 .idea/
 **/__pycache__/
+dist/
+build/
+*.spec

@@ -4,7 +4,7 @@ import pages.risk_diversification.risk_diversification_warnings as risk_diversif
 import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
 import pages.risk_diversification.risk_diversification_body as risk_diversification_body
 import utils.data_utils as data_utils
-from global_variables import context
+from utils.global_variables import context
 
 import dash_bootstrap_components as dbc
 from dash import callback

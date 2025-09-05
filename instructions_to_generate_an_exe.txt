@@ -1,0 +1,96 @@
+# Instructions
+1- install "pyinstaller"
+2- use the command
+    pyi-makespec --windowed --name <name_of_the_distribution> <name_of_the_run.py>
+EXAMPLE:
+    pyi-makespec --windowed --name Cartera_Cuadro_de_Mando my_main.py
+
+3- Modify the .spec file generated
+    pathex=['C:\\Users\\Ale\\PycharmProjects\\stock_dashboard'],    --> put the base path of the project
+    datas=[
+        ('assets','assets'),
+        ('pages','pages'),
+        ('utils','utils'),
+    ],                                                              --> put the folders that need to be included
+    hiddenimports=[
+        'pkg_resources.py2_warn',
+        'pandas',
+        'plotly.graph_objects',
+        'dash_core_components',
+        'dash_html_components',
+        'dash_table',
+        'forex_python',
+        'forex_python.converter',
+        'yfinance',
+    ],                                                              --> these are the imports to take into account
+                                                                    basically, you will know what to include
+                                                                    whenever you generate the .exe and it fails becaus
+                                                                    it doesnt have the X library
+4- Generate the .exe using the command
+    pyinstaller <name_of_the_distribution>.spec --noconfirm
+EXAMPLE:
+    pyinstaller Cartera_Cuadro_de_Mando.spec --noconfirm
+
+
+
+# ANNEX
+## Example of .spec file
+
+# -*- mode: python ; coding: utf-8 -*-
+
+
+a = Analysis(
+    ['my_main.py'],
+    pathex=['C:\\Users\\Ale\\PycharmProjects\\stock_dashboard'],
+    binaries=[],
+    datas=[
+        ('assets','assets'),
+        ('pages','pages'),
+        ('utils','utils'),
+    ],
+    hiddenimports=[
+        'pkg_resources.py2_warn',
+        'pandas',
+        'plotly.graph_objects',
+        'dash_core_components',
+        'dash_html_components',
+        'dash_table',
+        'forex_python',
+        'forex_python.converter',
+        'yfinance',
+    ],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+    optimize=0,
+)
+pyz = PYZ(a.pure)
+
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name='Cartera_Cuadro_de_Mando',
+    debug=True,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='Cartera_Cuadro_de_Mando',
+)
