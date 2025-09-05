@@ -1,11 +1,8 @@
-from dash import Output, Input, State, MATCH, callback_context, register_page
+from dash import Output, Input, MATCH, callback_context, register_page
 import pages.stock_portfolio.stock_portfolio_titles as stock_portfolio_titles
 import pages.stock_portfolio.stock_portfolio_warnings as stock_portfolio_warnings
 import pages.stock_portfolio.stock_portfolio_selectors as stock_portfolio_selectors
 import pages.stock_portfolio.stock_portfolio_body as stock_portfolio_body
-import pages.stock_portfolio.stock_portfolio_data as stock_portfolio_data
-import utils.data_utils as data_utils
-from global_variables import context
 
 import dash_bootstrap_components as dbc
 from dash import callback

@@ -1,5 +1,4 @@
-from global_variables import context
-from forex_python.converter import CurrencyRates
+from utils.global_variables import context
 import utils.data_utils as data_utils
 
 

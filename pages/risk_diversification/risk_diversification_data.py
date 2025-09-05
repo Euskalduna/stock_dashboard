@@ -1,7 +1,5 @@
-import pandas as pd
 import numpy as np
-import utils.data_utils as data_utils
-from global_variables import context
+from utils.global_variables import context
 
 
 def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column, filter_dict_list=[]):

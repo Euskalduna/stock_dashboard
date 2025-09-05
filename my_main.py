@@ -1,50 +1,9 @@
-from utils.general_utils import *
-from dash import Dash
-from dash_bootstrap_templates import load_figure_template
 import dash_bootstrap_components as dbc
-from dash import Dash, page_container, callback, Input, Output, State, html
+from app import app
+from utils.general_utils import *
+from dash import page_container, callback, Input, Output, State, html
 # import pages.risk_diversification.risk_diversification_page as risk_diversification_page
 # import pages.stock_portfolio.stock_portfolio_page as stock_portfolio_page
-
-# Inicio de la aplicacion
-#app = Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
-# app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-# Pagina para explorar temas de CSS de Dash: https://hellodash.pythonanywhere.com/adding-themes/dcc-components
-dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
-vizro_bootstrap = "https://cdn.jsdelivr.net/gh/mckinsey/vizro@main/vizro-core/src/vizro/static/css/vizro-bootstrap.min.css?v=2"
-# app = Dash(__name__, external_stylesheets=[vizro_bootstrap, dbc.icons.FONT_AWESOME, dbc_css], use_pages=True)
-#app = Dash(__name__, use_pages=True)
-# app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG, dbc.icons.FONT_AWESOME, dbc_css])
-app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
-# load_figure_template(["vizro", "vizro_dark"])
-
-
-
-#
-# color_mode_switch =  html.Span(
-#     [
-#         dbc.Label(className="fa fa-moon", html_for="switch"),
-#         dbc.Switch( id="switch", value=True, className="d-inline-block ms-1", persistence=True),
-#         dbc.Label(className="fa fa-sun", html_for="switch"),
-#     ]
-# )
-#
-#
-# # The ThemeChangerAIO loads all 52  Bootstrap themed figure templates to plotly.io
-# theme_controls = html.Div(
-#     [ThemeChangerAIO(aio_id="theme", custom_themes={'vizro': vizro_bootstrap}), color_mode_switch],
-#     className="hstack gap-3 mt-2"
-# )
-#
-
-
-
-
-
-
-# Other themes https://www.bootstrapcdn.com/bootswatch/
-# Cheatsheet https://hackerthemes.com/bootstrap-cheatsheet/
 
 
 # Genera el menú lateral
@@ -92,8 +51,6 @@ def toggle_sidebar(n_clicks, is_open):
         new_state = True
 
     return sidebar_style, content_width, new_state
-
-
 
 if __name__ == '__main__':
     print("antes")

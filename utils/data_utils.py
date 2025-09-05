@@ -1,20 +1,37 @@
+import sys
+
 from forex_python.converter import CurrencyRates
 
 import pandas as pd
 import numpy as np
 import yfinance as yf
+import os
 
 
-
+def get_data_path():
+    # Determina la ruta base, funciona tanto en desarrollo como en el .exe compilado
+    if getattr(sys, 'frozen', False):
+        # Si la aplicación está 'congelada' (es un .exe)
+        data_base_path = os.path.dirname(sys.executable)
+    else:
+        # Si está en modo de desarrollo (ejecutando el .py)
+        # data_base_path = os.path.dirname(os.path.abspath(__file__))
+        data_base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    data_base_path = os.path.join(data_base_path, 'data')
+    return data_base_path
 
 def get_purchases_and_sales_log():
-    compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
+    data_base_path = get_data_path()
+    data_path = os.path.join(data_base_path, 'log_compra_venta_AITA.csv')
+    compra_ventas_df = pd.read_csv(data_path, decimal=",")
     # compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
     return compra_ventas_df
 
 
 def get_company_info():
-    company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
+    data_base_path = get_data_path()
+    data_path = os.path.join(data_base_path, 'info_empresas_AITA.csv')
+    company_info_df = pd.read_csv(data_path, decimal=",")
     # company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
     return company_info_df
 
