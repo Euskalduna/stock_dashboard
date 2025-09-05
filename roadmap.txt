@@ -19,7 +19,6 @@
     y tener un margen por TODOS lados (no se de cuanto, pero ha de ser una medida relativa no absoluta)
 
 8- Hacer que los datos se cojan directamente de Gsheet en lugar de CSV                                          PENDIENTE
-9- Generar un .exe que abra la página esta                                                                      PENDIENTE
 10- Optimizar código / Modularizarlo                                                                            PENDIENTE
     Especialmente, me interesa crear una estructura / plantilla para la forma en las que genero las páginas
     Y una lógica en la que opera el código de cada una (que no todos los accesos sean desde cualquier archivo si no
