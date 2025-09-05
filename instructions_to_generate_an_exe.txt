@@ -31,6 +31,10 @@ EXAMPLE:
 EXAMPLE:
     pyinstaller Cartera_Cuadro_de_Mando.spec --noconfirm
 
+5- Copy the "data" folder of the project in the following path:
+    /dist/<name_of_the_distribution>
+EXAMPLE:
+    /dist/Cartera_Cuadro_de_Mando
 
 
 # ANNEX
