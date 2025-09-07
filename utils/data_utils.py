@@ -22,7 +22,8 @@ def get_data_path():
 
 def get_purchases_and_sales_log():
     data_base_path = get_data_path()
-    data_path = os.path.join(data_base_path, 'log_compra_venta_AITA.csv')
+    # data_path = os.path.join(data_base_path, 'log_compra_venta_AITA.csv')
+    data_path = os.path.join(data_base_path, 'log_compra_venta.csv')
     compra_ventas_df = pd.read_csv(data_path, decimal=",")
     # compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
     return compra_ventas_df
@@ -30,7 +31,8 @@ def get_purchases_and_sales_log():
 
 def get_company_info():
     data_base_path = get_data_path()
-    data_path = os.path.join(data_base_path, 'info_empresas_AITA.csv')
+    # data_path = os.path.join(data_base_path, 'info_empresas_AITA.csv')
+    data_path = os.path.join(data_base_path, 'info_empresas.csv')
     company_info_df = pd.read_csv(data_path, decimal=",")
     # company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
     return company_info_df

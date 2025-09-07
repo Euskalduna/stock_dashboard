@@ -20,14 +20,23 @@ def get_stock_portfolio_data(filter_dict_list=[], columns_to_keep_list=[], user_
     #purchases_and_sales_enriched_df['Acciones'] = purchases_and_sales_enriched_df.apply(lambda row: row['Acciones'] * -1 if row['Acción'] == 'Venta' else row['Acciones'], axis=1)
     #purchases_and_sales_enriched_df['Dinero'] = purchases_and_sales_enriched_df.apply(lambda row: row['Dinero']*-1 if row['Acción'] == 'Venta' else row['Dinero'], axis=1)
 
+    # I put as negatives the "sales"
+    sales_condition = (purchases_and_sales_enriched_df["Tipo de Valor"] == "Acción") & (purchases_and_sales_enriched_df["Acción"] == "Venta")
+    sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
+    purchases_and_sales_enriched_df.loc[sales_condition, sales_columns_to_alter] = purchases_and_sales_enriched_df.loc[sales_condition, sales_columns_to_alter] * -1
+
     # I prepare the portfolio table
     ## Sum all the purchases and sales
     stock_portfolio_df = purchases_and_sales_enriched_df.groupby(['Mercado', 'Ticker', 'Nombre Empresa']).sum()[['Acciones', 'Dinero', 'Dinero (EUR)', 'Dinero pagado en Comisión', 'Dinero pagado en comisión (EUR)']]
+    ## I remove the companies that have been completely selled
+    stock_portfolio_df = stock_portfolio_df[stock_portfolio_df["Acciones"] != 0]
+
     ## I re-add certain lost columns that are important to keep and others that I want to keep
     stock_portfolio_df = stock_portfolio_df.reset_index()
 
     stock_portfolio_df = stock_portfolio_df.merge(purchases_and_sales_enriched_df[['Ticker', 'Mercado', "ISIN", "Moneda del mercado", "Pais", "REIT", "Sector", "Meses Pago Dividendos"]], on=['Ticker', 'Mercado'])
     stock_portfolio_df = stock_portfolio_df.drop_duplicates()
+
     ## Get the statistics of the invested money
     stock_portfolio_df['invested_money_with_comissions'] = stock_portfolio_df.apply(lambda row: row['Dinero'] + row['Dinero pagado en Comisión'], axis=1)
     stock_portfolio_df['invested_money_with_comissions_in_euros'] = stock_portfolio_df.apply(lambda row: row['Dinero'] + row['Dinero pagado en comisión (EUR)'], axis=1)
