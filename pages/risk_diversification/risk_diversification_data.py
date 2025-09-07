@@ -4,6 +4,13 @@ from utils.global_variables import context
 
 def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column, filter_dict_list=[]):
     def calculate_weight_by_group(df, group, weight_criteria):
+        # Si la empresa tiene tipo de valor accion y accion es VENTA, entonces, debo multiplicar el valor por -1
+        # ventas_df = df[(df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")]
+        # ventas_df.loc[:, ["Acciones", "Dinero", "Dinero (EUR)"]] = ventas_df.loc[:, ["Acciones", "Dinero", "Dinero (EUR)"]] * -1
+
+        sales_condition = (df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")
+        sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
+        df.loc[sales_condition, sales_columns_to_alter] = df.loc[sales_condition, sales_columns_to_alter] * -1
         df_grouped = df.groupby(group).sum()[weight_criteria].reset_index().copy()
         df_grouped['weight'] = (df_grouped[weight_criteria] / df_grouped[weight_criteria].sum() * 100).round(2)
         # df_grouped['weight_to_display'] = df_grouped['weight'].apply(lambda value: f'{value} %')
@@ -38,6 +45,7 @@ def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column
         weight_criteria=data_column
     )
 
+    weight_by_criteria_df = weight_by_criteria_df[weight_by_criteria_df["Dinero (EUR)"] != 0]
     weight_by_criteria_df[data_column] = weight_by_criteria_df[data_column].round(2)
     weight_by_criteria_df = weight_by_criteria_df.sort_values(by=['weight'], ascending=False)
     return weight_by_criteria_df
