@@ -1,13 +1,13 @@
 from dash import register_page
-import pages.stock_portfolio.stock_portfolio_titles as stock_portfolio_titles
-import pages.stock_portfolio.stock_portfolio_warnings as stock_portfolio_warnings
-import pages.stock_portfolio.stock_portfolio_selectors as stock_portfolio_selectors
-import pages.stock_portfolio.stock_portfolio_body as stock_portfolio_body
-import pages.stock_portfolio.stock_portfolio_data as stock_portfolio_data
+import pages.stock_portfolio.page_components.titles as stock_portfolio_titles
+import pages.stock_portfolio.page_components.warnings as stock_portfolio_warnings
+import pages.stock_portfolio.page_components.selectors as stock_portfolio_selectors
+import pages.stock_portfolio.page_components.body as stock_portfolio_body
+import pages.stock_portfolio.data as stock_portfolio_data
 import dash_bootstrap_components as dbc
 
 
-register_page(__name__)
+register_page(__name__, name="Cartera", path="/portfolio")
 
 # Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
 page_grid_columns = 1  # Esto lo pongo a mano

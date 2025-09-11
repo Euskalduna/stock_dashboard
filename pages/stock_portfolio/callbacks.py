@@ -1,8 +1,8 @@
-from dash import Output, Input, State, MATCH, callback_context
+from dash import Output, Input, MATCH, callback_context
 from app import app
 
-import pages.stock_portfolio.stock_portfolio_body as stock_portfolio_body
-import pages.stock_portfolio.stock_portfolio_data as stock_portfolio_data
+import pages.stock_portfolio.page_components.body as stock_portfolio_body
+import pages.stock_portfolio.data as stock_portfolio_data
 
 
 @app.callback(

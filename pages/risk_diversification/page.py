@@ -1,14 +1,14 @@
 from dash import register_page
 from utils.global_variables import context
-import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
-import pages.risk_diversification.risk_diversification_warnings as risk_diversification_warnings
-import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
-import pages.risk_diversification.risk_diversification_body as risk_diversification_body
-import pages.risk_diversification.risk_diversification_data as risk_diversification_data
+import pages.risk_diversification.page_components.titles as risk_diversification_titles
+import pages.risk_diversification.page_components.warnings as risk_diversification_warnings
+import pages.risk_diversification.page_components.selectors as risk_diversification_selectors
+import pages.risk_diversification.page_components.body as risk_diversification_body
+import pages.risk_diversification.data as risk_diversification_data
 import dash_bootstrap_components as dbc
 
 
-register_page(__name__)
+register_page(__name__, name="Diversificación del Riesgo", path="/")
 
 # Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
 page_grid_columns = 1  # Esto lo pongo a mano

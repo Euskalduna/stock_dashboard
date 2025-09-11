@@ -1,5 +1,5 @@
-import pages.stock_portfolio.stock_portfolio_titles as stock_portfolio_titles
-import pages.stock_portfolio.charts_and_tables as stock_portfolio_charts_and_tables
+import pages.stock_portfolio.page_components.titles as stock_portfolio_titles
+import pages.stock_portfolio.page_components.charts_and_tables as stock_portfolio_charts_and_tables
 import dash_bootstrap_components as dbc
 
 

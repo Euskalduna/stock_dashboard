@@ -2,8 +2,8 @@ from utils.global_variables import context
 from dash import Output, Input, State, MATCH, callback_context
 from app import app
 
-import pages.risk_diversification.risk_diversification_warnings as risk_diversification_warnings
-import pages.risk_diversification.risk_diversification_body as risk_diversification_body
+import pages.risk_diversification.page_components.warnings as risk_diversification_warnings
+import pages.risk_diversification.page_components.body as risk_diversification_body
 import utils.data_utils as data_utils
 
 #TODO: debo estandarizar la nomenclatura de los IDs
