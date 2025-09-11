@@ -1,9 +1,12 @@
-import dash_bootstrap_components as dbc
 from app import app
 from utils.general_utils import *
 from dash import page_container, callback, Input, Output, State, html
-# import pages.risk_diversification.risk_diversification_page as risk_diversification_page
-# import pages.stock_portfolio.stock_portfolio_page as stock_portfolio_page
+
+# --------------------------------------------------------------------------------------------------------------
+# IMPORTANTE: Aunque parece que no hace nada es necesario para que funcionen los callbacks !!!!!
+import pages.risk_diversification.callbacks as risk_diversification_callbacks
+import pages.stock_portfolio.callbacks as stock_portfolio_callbacks
+# --------------------------------------------------------------------------------------------------------------
 
 
 # Genera el menú lateral
@@ -51,6 +54,7 @@ def toggle_sidebar(n_clicks, is_open):
         new_state = True
 
     return sidebar_style, content_width, new_state
+
 
 if __name__ == '__main__':
     print("antes")
