@@ -25,21 +25,29 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
             filter_dict_list.append(arg)
         return filter_dict_list
 
-    def get_new_data_divs_to_draw(new_risk_diversification_div_list, risk_diversification_criteria_dict_list,
-                                  owner_column_filter_dict, broker_column_filter_dict, weight_criteria_column, case_to_update):
+    def get_new_data_divs_to_draw(
+            risk_diversification_criteria_dict_list, owner_column_filter_dict, broker_column_filter_dict,
+            weight_criteria_column, case_to_update
+    ):
+        new_risk_diversification_div_list = []
+
         for risk_criteria_dict in risk_diversification_criteria_dict_list:
             if case_to_update == risk_criteria_dict['criteria_name']:
                 # Get data by selected weight and criteria
                 purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
                 purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
                 purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
+
                 # Get criteria to filter by the DF
                 filter_dict_list = get_filter_dict_list(owner_column_filter_dict, broker_column_filter_dict)
+
                 # Get de div of each sector of the page (that is supposed to contain data)
-                panel_children = risk_diversification_body.get_panel(purchases_and_sales_enriched_df,
-                                                                     risk_criteria_dict,
-                                                                     weight_criteria_column,
-                                                                     filter_dict_list)  # Esto va a devolver un [elemento, elemento2, elemento3]
+                panel_children = risk_diversification_body.get_panel(
+                    purchases_and_sales_enriched_df,
+                    risk_criteria_dict,
+                    weight_criteria_column,
+                    filter_dict_list
+                )  # Esto va a devolver un [elemento, elemento2, elemento3]
                 new_risk_diversification_div_list.append(panel_children)
         return new_risk_diversification_div_list
 
@@ -53,14 +61,16 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
 
     # Get the new data to draw in the browser
-    new_risk_diversification_div_list = []
-    new_risk_diversification_div_list = get_new_data_divs_to_draw(new_risk_diversification_div_list,
-                                                                  risk_diversification_criteria_dict_list,
-                                                                  owner_column_filter_dict,
-                                                                  broker_column_filter_dict,
-                                                                  weight_criteria_column,
-                                                                  case_to_update)
+    new_risk_diversification_div_list = get_new_data_divs_to_draw(
+        risk_diversification_criteria_dict_list,
+        owner_column_filter_dict,
+        broker_column_filter_dict,
+        weight_criteria_column,
+        case_to_update
+    )
+
     return new_risk_diversification_div_list  # Esto tendria que ser una lista?? una lista de listas????
+
 
 @app.callback(
     [Output("page_warning_row", 'children')],
@@ -79,6 +89,7 @@ def update_page_warning_row(selected_options_weight):
         text = "ADVERTENCIA: los precios de las acciones tienen un RETRASO DE 1 O 2 DÍAS, por ser de la API de Yahoo y gratis"
         warning_col = risk_diversification_warnings.get_warning_col(text)
     return [warning_col]
+
 
 @app.callback(
     [Output({'type': 'risk-diversification-data-panel', 'index': MATCH}, 'className')],
@@ -106,7 +117,6 @@ def hide_or_show_data_panel(selected_options, className):
         new_className = f"{className} d-none"
 
     return [new_className]
-
 
 
 @app.callback(

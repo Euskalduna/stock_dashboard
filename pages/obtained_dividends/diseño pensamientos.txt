@@ -3,7 +3,7 @@
 	Filtros: por dueño, por broker, por año, por mes, por Bolsa/pais y por empresa
 	Selector: cantidad en moneda local o EUROS y otro selector para mostrar el BRUTO o el NETO
 
-	1- Tabla PIVOTE y filtros.
+	1- Tabla PIVOTE y filtros.-------------------------------------------------------------> HECHO
 	Quiero poder filtrar un año y ver lo que he cobrado
 	Quiero que también se pueda filtrar por empresa
 
@@ -16,31 +16,32 @@
 
 	2- Un gráfico de barras o de lineas que muestre lo que se está cobrando por dividendos
 	cada año. El valor es el bruto o el NETO en funcion de un selector, esto SIEMPRE estará
-	en EUR (si no el sumatorio no tiene sentido)
+	en EUR (si no el sumatorio no tiene sentido) -----------------------------------------> HECHO
 
 	3- Un gráfico de tarta que muestre para el año filtrado los dividendos cobrado
-	por empresa
+	por empresa --------------------------------------------------------------------------> HECHO
 
-	4- Una tabla de lo que se estima de lo que hay que pagar a Hacienda
+	4- Una tabla de lo que se estima de lo que hay que pagar a Hacienda-------------------> PENDIENTE
 	Esto siempre en EUROS.
 	No le afecta el filtro de mostrar BRUTO o NETO
 
-	5- Una tabla que por columnas tenga más o menos los KPIs de la Excel de dividendos
-	y por filas tenga los años (los niveles de desglose sería AÑO>MES>EMPRESA)
-	Le deberían de afectar TODOS los filtros
+
+-------------------------------------
+COSAS DE ESTA PÁGINA A ARREGLAR
+
+- Que los DROP DOWNS Tengan una opcion para SELECCIONAR TODAS las opciones de su dropdown
+- Que los DROP DOWNS Tengan una opcion para BORRAR TODAS las opciones de su dropdown
+
+- Cambiar el filtro de MONEDA LOCAL O EURO a que esté solo en el panel que le afecta????????????
+
+- Cambiar la distribución de los dropdowns para que sea de una de las 2 formas:
+    - 3 filas (hard codeado)
+    - N filas y que se distribuya dinámicamente
+- PUEDE que hacer algo para que el div de los filtros y el de las páginas esté estático???? (dando la opcion al user
+a que lo desfije / fije, al menos, el de los filtros)
 
 
-	- PARA EMPREZAR:
-	Filtros: por dueño, por broker, por año, por mes, por Bolsa/pais y por empresa
-	Selector: cantidad en moneda local o EUROS y otro selector para mostrar el BRUTO o el NETO
-
-	1- Grafico de barras o de lineas que muestre lo que se está cobrando por dividendos por año
-	El valor es el bruto o NETO en funcion del selector
-	Siempre estará en EUROS (si no el sumatorio no tiene sentido)
-
-	2- Un gráfico de tarta qeu muestre los dividendos cobrados por cada empresa
-	Siempre estará en EUROS (si no el sumatorio no tiene sentido)
-
+-------------------------------------
 
 
 # Estructura Sugerida por Gemini

@@ -15,11 +15,12 @@ page_grid_columns = 1  # Esto lo pongo a mano
 default_weight_criteria_column = 'Dinero (EUR)'
 risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
 page_title = "Diversifiación de Riesgos"
+
 purchases_and_sales_enriched_df = risk_diversification_data.get_page_data() # get the data to play with
 
 page_title_row = risk_diversification_titles.get_page_title_row(page_title)
 warning_row = risk_diversification_warnings.get_page_empty_warning_row()
-selector_row = risk_diversification_selectors.get_page_general_selector_row(risk_diversification_criteria_dict_list)
+selector_row = risk_diversification_selectors.get_page_general_selector_row(purchases_and_sales_enriched_df, risk_diversification_criteria_dict_list, default_weight_criteria_column)
 body_row = risk_diversification_body.get_body_row(purchases_and_sales_enriched_df, risk_diversification_criteria_dict_list, default_weight_criteria_column, page_grid_columns)
 
 layout = dbc.Row(dbc.Col([page_title_row, warning_row, selector_row, body_row]))

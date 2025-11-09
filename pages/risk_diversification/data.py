@@ -5,9 +5,9 @@ import utils.data_utils as data_utils
 
 def get_page_data():
     purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df["Ticker"].notna()]
     purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[
-        purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
+        purchases_and_sales_enriched_df["Tipo de Valor"] == "Acción"]
     return purchases_and_sales_enriched_df
 
 
@@ -17,9 +17,11 @@ def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column
         # ventas_df = df[(df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")]
         # ventas_df.loc[:, ["Acciones", "Dinero", "Dinero (EUR)"]] = ventas_df.loc[:, ["Acciones", "Dinero", "Dinero (EUR)"]] * -1
 
-        sales_condition = (df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")
-        sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
-        df.loc[sales_condition, sales_columns_to_alter] = df.loc[sales_condition, sales_columns_to_alter] * -1
+        # # Corrijo los registros de venta, para que computen como negativas algunas columnas
+        # sales_condition = (df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")
+        # sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
+        # df.loc[sales_condition, sales_columns_to_alter] = df.loc[sales_condition, sales_columns_to_alter] * -1
+
         df_grouped = df.groupby(group).sum()[weight_criteria].reset_index().copy()
         df_grouped['weight'] = (df_grouped[weight_criteria] / df_grouped[weight_criteria].sum() * 100).round(2)
         # df_grouped['weight_to_display'] = df_grouped['weight'].apply(lambda value: f'{value} %')

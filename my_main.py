@@ -6,6 +6,7 @@ from dash import page_container, callback, Input, Output, State, html
 # IMPORTANTE: Aunque parece que no hace nada es necesario para que funcionen los callbacks !!!!!
 import pages.risk_diversification.callbacks as risk_diversification_callbacks
 import pages.stock_portfolio.callbacks as stock_portfolio_callbacks
+import pages.obtained_dividends.callbacks as obtained_dividends_callbacks
 # --------------------------------------------------------------------------------------------------------------
 
 
