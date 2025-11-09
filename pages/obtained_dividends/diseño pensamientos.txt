@@ -1,0 +1,118 @@
+- Crear Página cobro dividendos
+	-IDEAL:
+	Filtros: por dueño, por broker, por año, por mes, por Bolsa/pais y por empresa
+	Selector: cantidad en moneda local o EUROS y otro selector para mostrar el BRUTO o el NETO
+
+	1- Tabla PIVOTE y filtros.-------------------------------------------------------------> HECHO
+	Quiero poder filtrar un año y ver lo que he cobrado
+	Quiero que también se pueda filtrar por empresa
+
+	Suponiendo que NO se filtre, quiero que la tabla sea como una tabla pivote
+	En cada FILA se tenga las fechas y en las columnas, las empresas
+	Las filas están agrupadas por años y luego por meses y como nivel final, la fecha de cobro
+	Las columnas están agrupadas por PAIS de la bolsa y luego por empresa (como nivle final)
+
+	El valor es el bruto o el NETO en funcion de un selector
+
+	2- Un gráfico de barras o de lineas que muestre lo que se está cobrando por dividendos
+	cada año. El valor es el bruto o el NETO en funcion de un selector, esto SIEMPRE estará
+	en EUR (si no el sumatorio no tiene sentido) -----------------------------------------> HECHO
+
+	3- Un gráfico de tarta que muestre para el año filtrado los dividendos cobrado
+	por empresa --------------------------------------------------------------------------> HECHO
+
+	4- Una tabla de lo que se estima de lo que hay que pagar a Hacienda-------------------> PENDIENTE
+	Esto siempre en EUROS.
+	No le afecta el filtro de mostrar BRUTO o NETO
+
+
+-------------------------------------
+COSAS DE ESTA PÁGINA A ARREGLAR
+
+- Que los DROP DOWNS Tengan una opcion para SELECCIONAR TODAS las opciones de su dropdown
+- Que los DROP DOWNS Tengan una opcion para BORRAR TODAS las opciones de su dropdown
+
+- Cambiar el filtro de MONEDA LOCAL O EURO a que esté solo en el panel que le afecta????????????
+
+- Cambiar la distribución de los dropdowns para que sea de una de las 2 formas:
+    - 3 filas (hard codeado)
+    - N filas y que se distribuya dinámicamente
+- PUEDE que hacer algo para que el div de los filtros y el de las páginas esté estático???? (dando la opcion al user
+a que lo desfije / fije, al menos, el de los filtros)
+
+
+-------------------------------------
+
+
+# Estructura Sugerida por Gemini
+
+your_project/
+├── app.py          # Main app definition (the 'glue')
+├── run.py          # Script to run the server
+├── assets/         # CSS, images, etc.
+├── components/     # Reusable components (e.g., navbar.py)
+├── pages/
+│   ├── page_1/
+│   │   ├── __init__.py
+│   │   ├── layout.py     # The 'View'
+│   │   ├── callbacks.py  # The 'Controller'
+│   │   └── data.py       # The 'Model' (data fetching/processing)
+│   │
+│   └── page_2/
+│       ├── __init__.py
+│       ├── layout.py
+│       ├── callbacks.py
+│       └── data.py
+│
+└── utils/          # Utility functions
+
+Estaba pensando en que para estandarizar igual podría crear una clase que sea CARD o algo así
+Esa clase debera poder crear elemento CARD que son los componentes que quiero usar para poblar
+mis páginas
+Además, igual puedo crear otra clase que sea PAGE, SELECTO y similar. Esta clase PAGE
+recibiría las otras y las usaria para montar una página. Si esto fuese así, además, deberia
+de hacer que hubiese un .py que fuese SOLO para los elementos que se creen en las CARDS
+(graficos, tablas, etc)
+
+
+## DUDAS
+Como se llama a CALLBACKS.py?
+
+# Pivot table
+dash_pivottable --> third party element
+Dash AG Grid --> NPI pero nativo a Dash + comple lo de mostrar / ocultar columnas
+column_selectable="multi" --> en una tabla de Dash, puedo ocultar columnas
+
+
+# Archivo "PAGE"
+Parece que solo se dedica a obtener los elementos a incluir en la página y luego los pone en orden
+en el LAYOUT (igual debería renombrar la página a "layout" entonces????)
+Además tiene los callbacks
+
+
+# ARCHIVO "BODY"
+get_body_row --> devuelve la fila de "tarjetas" que hay en el cuerpo
+get_panel --> devuelvo una "tarjeta"
+get_panel_body_row --> coge los elementos que quiera incluir en el panel y devuelver el row con ellos (este row se usa en el "panel")
+resto de métodos son para crear elementos
+
+
+LO QUE DEBO HACER ES
+	- MOVER LOS CALLBACKS A UN ARCHIVO DE CALLBACKS EN CADA PAGINA
+	- TRATAR DE GENERALIZAR EL PRIMER METODO DEL ARCHIVO "BODY"
+	- TRATAR DE GENERALIZAR EL SEGUNDO METODO DEL ARCHIVO "BODY"
+
+
+- get the data
+- get the body panel
+- get the data rows --> esto es para decir cuantos paneles por fila ---> PODRÍA QUITARLO !!!
+- create the rows
+return
+
+get the data --> esto deberá estar en el panel???? NO, esto estará en el body y se lo paso al panel. Los paneles son algo genérico, es decir que si
+estoy haciendo N paneles y de todos 1 tiene datos distintos, tengo que meterle un IF para conseguir esos datos distintos para ese concreto, no gano nada por ese lado
+Sí pierdo en la parte de que cada vez que se generase un panel tiene que conseguir los datos.
+Por eso, para que solo los busque 1 vez, lo hago en el body y apañao
+
+
+get_panels() --> pueden ser N paneles (0 a N)
