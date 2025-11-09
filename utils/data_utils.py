@@ -10,32 +10,46 @@ import os
 
 def get_data_path():
     # Determina la ruta base, funciona tanto en desarrollo como en el .exe compilado
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         # Si la aplicación está 'congelada' (es un .exe)
         data_base_path = os.path.dirname(sys.executable)
     else:
         # Si está en modo de desarrollo (ejecutando el .py)
         # data_base_path = os.path.dirname(os.path.abspath(__file__))
         data_base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    data_base_path = os.path.join(data_base_path, 'data')
+    data_base_path = os.path.join(data_base_path, "data")
     return data_base_path
+
 
 def get_purchases_and_sales_log():
     data_base_path = get_data_path()
-    # data_path = os.path.join(data_base_path, 'log_compra_venta_AITA.csv')
-    data_path = os.path.join(data_base_path, 'log_compra_venta.csv')
+    data_path = os.path.join(data_base_path, "log_compra_venta.csv")
     compra_ventas_df = pd.read_csv(data_path, decimal=",")
-    # compra_ventas_df = pd.read_csv("data/log_compra_venta_AITA.csv", decimal=",")
+
+    # Corrijo los registros de venta, para que computen como negativas algunas columnas
+    sales_condition = (compra_ventas_df["Tipo de Valor"] == "Acción") & (compra_ventas_df["Acción"] == "Venta")
+    sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
+    compra_ventas_df.loc[sales_condition, sales_columns_to_alter] = compra_ventas_df.loc[sales_condition, sales_columns_to_alter] * -1
+
     return compra_ventas_df
 
 
 def get_company_info():
     data_base_path = get_data_path()
-    # data_path = os.path.join(data_base_path, 'info_empresas_AITA.csv')
-    data_path = os.path.join(data_base_path, 'info_empresas.csv')
+    data_path = os.path.join(data_base_path, "info_empresas.csv")
     company_info_df = pd.read_csv(data_path, decimal=",")
-    # company_info_df = pd.read_csv("data/info_empresas_AITA.csv", decimal=",")
     return company_info_df
+
+
+def get_obtained_dividends():
+    data_base_path = get_data_path()
+    data_path = os.path.join(data_base_path, "log_dividendos.csv")
+    obtained_dividends_df = pd.read_csv(data_path, decimal=",")
+    obtained_dividends_df["stock_market_country"] = obtained_dividends_df["Mercado"].apply(
+        lambda stock_market_id: get_country_from_stock_market(stock_market_id)
+    )
+
+    return obtained_dividends_df
 
 
 def get_purchases_and_sales_enriched():
@@ -50,34 +64,43 @@ def get_purchases_and_sales_enriched():
     return purchases_and_sales_enriched_df
 
 
-# def get_risk_diversification_data(weight_criteria_column, risk_criteria_dict):
-#     def calculate_weight_by_group(df, group, weight_criteria):
-#         df_grouped = df.groupby(group).sum()[weight_criteria].reset_index().copy()
-#         df_grouped['weight'] = (df_grouped[weight_criteria] / df_grouped[weight_criteria].sum() * 100).round(2)
-#         # df_grouped['weight_to_display'] = df_grouped['weight'].apply(lambda value: f'{value} %')
-#         return df_grouped
-#
-#     compra_ventas_df = get_purchases_and_sales_log()
-#     company_info_df = get_company_info()
-#
-#
-#     # TRANSFORMACIONES DE DATOS
-#     ## UNIONES DE DATOS
-#     compra_ventas_df['pk'] = compra_ventas_df['Mercado'].astype(str) + compra_ventas_df['Ticker'].astype(str)
-#     company_info_df = company_info_df.rename(columns={'PK': 'pk'})
-#     compra_ventas_enriched_df = compra_ventas_df.merge(company_info_df[['pk', 'Sector', 'Moneda del mercado', 'Pais']],
-#                                                        how="left", on='pk')
-#
-#     # CALCULOS
-#     # df['Dinero (EUR)'] = df.loc[df['Acción'] == 'Venta', 'Dinero (EUR)'].apply(lambda value: value * -1) # Tengo que compensar de alguna forma las ventas que he hecho, pero este no funciona INVESTIGAR MÁS!!!
-#     weight_by_criteria_df = calculate_weight_by_group(
-#         compra_ventas_enriched_df,
-#         group=[risk_criteria_dict['data_column']],
-#         weight_criteria=weight_criteria_column
-#     )
-#     weight_by_criteria_df[weight_criteria_column] = weight_by_criteria_df[weight_criteria_column].round(2)
-#     weight_by_criteria_df = weight_by_criteria_df.sort_values(by=['weight'], ascending=False)
-#     return weight_by_criteria_df
+def get_country_from_stock_market(stock_market_code):
+    stock_market_to_country_dict = {
+        "NASDAQ": 'USA',
+        "NYSE": 'USA',
+        "BME": 'España',
+        "LON": 'UK',
+        "EPA": 'Francia',
+        "HKG": 'Hong Kong',
+        "XETRA": 'Alemania',
+        "JSE": 'Sudáfrica',
+        "TSX": 'Canadá',
+        "ASX": 'Australia'
+    }
+
+    try:
+        # If it does not find the stock_market, it returns NONE
+        country = stock_market_to_country_dict.get(stock_market_code.upper())
+        return country
+    except AttributeError:
+        return None
+
+
+def get_month_dict():
+    return {
+        1: 'Enero',
+        2: 'Febrero',
+        3: 'Marzo',
+        4: 'Abril',
+        5: 'Mayo',
+        6: 'Junio',
+        7: 'Julio',
+        8: 'Agosto',
+        9: 'Septiembre',
+        10: 'Octubre',
+        11: 'Noviembre',
+        12: 'Diciembre'
+    }
 
 
 def get_companies_latest_stock_price(company_df):

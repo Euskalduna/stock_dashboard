@@ -7,9 +7,7 @@ import dash_bootstrap_components as dbc
 
 
 # Esto es para cuando el programa ejecuta en el .exe con el PyInstaller
-import sys
-
-
+# This class has been generated to be able to generate a .exe with pyinstaller
 class NullWriter:
     def write(self, s):
         pass
@@ -17,7 +15,7 @@ class NullWriter:
     def flush(self):
         pass
 
-
+import sys
 if sys.stdout is None:
     sys.stdout = NullWriter()
 if sys.stderr is None:

@@ -2,6 +2,12 @@ from utils.global_variables import context
 import utils.data_utils as data_utils
 
 
+def get_page_data(filter_dict_list=[], columns_to_keep_list=[], user_column_names_dict={}):
+    # get_data
+    stock_portfolio_df = get_stock_portfolio_data(filter_dict_list, columns_to_keep_list, user_column_names_dict)
+    return stock_portfolio_df
+
+
 def get_stock_portfolio_data(filter_dict_list=[], columns_to_keep_list=[], user_column_names_dict={}):
     # I get the base data
     purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()

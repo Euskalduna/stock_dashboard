@@ -1,26 +1,11 @@
-from dash import Output, Input, MATCH, callback_context, register_page
-import pages.stock_portfolio.stock_portfolio_titles as stock_portfolio_titles
-import pages.stock_portfolio.stock_portfolio_warnings as stock_portfolio_warnings
-import pages.stock_portfolio.stock_portfolio_selectors as stock_portfolio_selectors
-import pages.stock_portfolio.stock_portfolio_body as stock_portfolio_body
+from dash import Output, Input, MATCH, callback_context
+from app import app
 
-import dash_bootstrap_components as dbc
-from dash import callback
-
-register_page(__name__)
-
-# Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
-page_title = "Cartera de acciones"
-
-page_title_row = stock_portfolio_titles.get_page_title_row(page_title)
-warning_row = stock_portfolio_warnings.get_page_empty_warning_row()
-selector_row = stock_portfolio_selectors.get_page_general_selector_row()
-body_row = stock_portfolio_body.get_body_row()
-
-layout = dbc.Row(dbc.Col([page_title_row, warning_row, selector_row, body_row]))
+import pages.stock_portfolio.page_components.body as stock_portfolio_body
+import pages.stock_portfolio.data as stock_portfolio_data
 
 
-@callback(
+@app.callback(
     [Output({'type': 'stock-portfolio-data-panel', 'index': MATCH}, 'children')],
     [Input("owner_dropdown_selector", "value"),
      Input("broker_dropdown_selector", "value"),
@@ -85,7 +70,8 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     def get_new_data_divs_to_draw(new_stock_portfolio_div_list, filter_dict_list, columns_to_keep_list, user_column_names_dict, panel_to_update):
         if panel_to_update == 'portfolio':
             # Get de div of each sector of the page (that is supposed to contain data)
-            panel_children = stock_portfolio_body.get_panel(filter_dict_list, columns_to_keep_list, user_column_names_dict)  # Esto va a devolver un [elemento, elemento2, elemento3]
+            stock_portfolio_df = stock_portfolio_data.get_page_data(filter_dict_list, columns_to_keep_list, user_column_names_dict)
+            panel_children = stock_portfolio_body.get_panel(stock_portfolio_df)
             new_stock_portfolio_div_list.append(panel_children)
         return new_stock_portfolio_div_list
 

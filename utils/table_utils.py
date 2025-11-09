@@ -9,6 +9,7 @@ def get_default_style_header():
     }
     return style_header
 
+
 def get_default_style_data():
     font_family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
 
@@ -19,6 +20,7 @@ def get_default_style_data():
     }
     return style_data
 
+
 def get_default_style_data_conditional():
     # Style conditional formatting (example)
     style_data_conditional = [
@@ -28,6 +30,7 @@ def get_default_style_data_conditional():
         }
     ]
     return style_data_conditional
+
 
 def get_default_style_table():
     # Add a border to the whole table

@@ -1,4 +1,4 @@
-data/*.csv
+data/
 venv/
 .idea/
 **/__pycache__/

@@ -1,31 +1,14 @@
-from dash import Output, Input, State, MATCH, callback_context, register_page
-import pages.risk_diversification.risk_diversification_titles as risk_diversification_titles
-import pages.risk_diversification.risk_diversification_warnings as risk_diversification_warnings
-import pages.risk_diversification.risk_diversification_selectors as risk_diversification_selectors
-import pages.risk_diversification.risk_diversification_body as risk_diversification_body
-import utils.data_utils as data_utils
 from utils.global_variables import context
+from dash import Output, Input, State, MATCH, callback_context
+from app import app
 
-import dash_bootstrap_components as dbc
-from dash import callback
+import pages.risk_diversification.page_components.warnings as risk_diversification_warnings
+import pages.risk_diversification.page_components.body as risk_diversification_body
+import utils.data_utils as data_utils
 
-register_page(__name__)
+#TODO: debo estandarizar la nomenclatura de los IDs
 
-# Fijo el numero de columnas que quiero en cada fila (lo que definira el numero de filas)
-page_grid_columns = 1  # Esto lo pongo a mano
-default_weight_criteria_column = 'Dinero (EUR)'
-risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
-page_title = "Diversifiación de Riesgos"
-
-page_title_row = risk_diversification_titles.get_page_title_row(page_title)
-warning_row = risk_diversification_warnings.get_page_empty_warning_row()
-selector_row = risk_diversification_selectors.get_page_general_selector_row(risk_diversification_criteria_dict_list)
-body_row = risk_diversification_body.get_body_row(risk_diversification_criteria_dict_list, default_weight_criteria_column, page_grid_columns)
-
-layout = dbc.Row(dbc.Col([page_title_row, warning_row, selector_row, body_row]))
-
-
-@callback(
+@app.callback(
     [Output({'type': 'risk-diversification-data-panel', 'index': MATCH}, 'children')],
     [Input("owner_dropdown_selector", "value"),
      Input("broker_dropdown_selector", "value"),
@@ -42,21 +25,29 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
             filter_dict_list.append(arg)
         return filter_dict_list
 
-    def get_new_data_divs_to_draw(new_risk_diversification_div_list, risk_diversification_criteria_dict_list,
-                                  owner_column_filter_dict, broker_column_filter_dict, weight_criteria_column, case_to_update):
+    def get_new_data_divs_to_draw(
+            risk_diversification_criteria_dict_list, owner_column_filter_dict, broker_column_filter_dict,
+            weight_criteria_column, case_to_update
+    ):
+        new_risk_diversification_div_list = []
+
         for risk_criteria_dict in risk_diversification_criteria_dict_list:
             if case_to_update == risk_criteria_dict['criteria_name']:
                 # Get data by selected weight and criteria
                 purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
                 purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
                 purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
+
                 # Get criteria to filter by the DF
                 filter_dict_list = get_filter_dict_list(owner_column_filter_dict, broker_column_filter_dict)
+
                 # Get de div of each sector of the page (that is supposed to contain data)
-                panel_children = risk_diversification_body.get_panel(purchases_and_sales_enriched_df,
-                                                                     risk_criteria_dict,
-                                                                     weight_criteria_column,
-                                                                     filter_dict_list)  # Esto va a devolver un [elemento, elemento2, elemento3]
+                panel_children = risk_diversification_body.get_panel(
+                    purchases_and_sales_enriched_df,
+                    risk_criteria_dict,
+                    weight_criteria_column,
+                    filter_dict_list
+                )  # Esto va a devolver un [elemento, elemento2, elemento3]
                 new_risk_diversification_div_list.append(panel_children)
         return new_risk_diversification_div_list
 
@@ -70,16 +61,18 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     risk_diversification_criteria_dict_list = context['risk_diversification_criteria_dict_list'].copy()
 
     # Get the new data to draw in the browser
-    new_risk_diversification_div_list = []
-    new_risk_diversification_div_list = get_new_data_divs_to_draw(new_risk_diversification_div_list,
-                                                                  risk_diversification_criteria_dict_list,
-                                                                  owner_column_filter_dict,
-                                                                  broker_column_filter_dict,
-                                                                  weight_criteria_column,
-                                                                  case_to_update)
+    new_risk_diversification_div_list = get_new_data_divs_to_draw(
+        risk_diversification_criteria_dict_list,
+        owner_column_filter_dict,
+        broker_column_filter_dict,
+        weight_criteria_column,
+        case_to_update
+    )
+
     return new_risk_diversification_div_list  # Esto tendria que ser una lista?? una lista de listas????
 
-@callback(
+
+@app.callback(
     [Output("page_warning_row", 'children')],
     [Input("weight_dropdown_selector", "value")]
 )
@@ -97,7 +90,8 @@ def update_page_warning_row(selected_options_weight):
         warning_col = risk_diversification_warnings.get_warning_col(text)
     return [warning_col]
 
-@callback(
+
+@app.callback(
     [Output({'type': 'risk-diversification-data-panel', 'index': MATCH}, 'className')],
     [Input("diversification_section_checklist", "value")],
     [State({'type': 'risk-diversification-data-panel', 'index': MATCH}, 'className')]
@@ -125,8 +119,7 @@ def hide_or_show_data_panel(selected_options, className):
     return [new_className]
 
 
-
-@callback(
+@app.callback(
     [Output({"type": "pie_chart-container", "index": MATCH}, "className"),
      Output({"type": "table-container", "index": MATCH}, "className")],
     [Input({'type': 'visualization-checklist', 'index': MATCH}, "value")],
@@ -194,6 +187,3 @@ def hide_or_show_data(selected_options, pie_chart_classname, table_classname):
     new_pie_chart_classname, new_table_classname = set_chart_and_table_width(new_pie_chart_classname, new_table_classname)
 
     return [new_pie_chart_classname, new_table_classname]
-
-
-#TODO: debo estandarizar la nomenclatura de los IDs

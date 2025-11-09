@@ -1,77 +1,113 @@
 import dash
-from dash import dcc
-from dash import html
+from dash import html, dcc
 from dash.dependencies import Input, Output
-import dash_table
+import dash_pivottable
 import pandas as pd
+import random
+from datetime import datetime, timedelta
 
+# Initialize the Dash app
 app = dash.Dash(__name__)
 
-# Sample data for the DataTable
-data = {
-    'Column 1 with a very long header title': ['Short content', 'Another short one'],
-    'Column 2': ['Content that is long and needs to wrap around.', 'More content that is also quite long to test the wrapping feature.'],
-    'Column 3': ['Short', 'VeryLongWordThatMightNotWrapProperlyWithoutSpaces']
-}
-df = pd.DataFrame(data)
 
-app.layout = html.Div([
-    html.H1("Datatable with Dynamic Column Width and Text Wrapping"),
-    dash_table.DataTable(
-        id='datatable-interactivity',
-        columns=[
-            {"name": i, "id": i} for i in df.columns
-        ],
-        data=df.to_dict('records'),
-        editable=True,
-        filter_action="native",
-        sort_action="native",
-        sort_mode="multi",
-        column_selectable="single",
-        row_selectable="multi",
-        row_deletable=True,
-        selected_columns=[],
-        selected_rows=[],
-        page_action="native",
-        page_current=0,
-        page_size=10,
-        style_cell={
-            'overflow': 'hidden',
-            'textOverflow': 'ellipsis',
-            'maxWidth': 150, # Adjust this value as the threshold for wrapping
-            'whiteSpace': 'normal' # This allows text to wrap
-        },
-        style_header={
-            'whiteSpace': 'normal',
-            'height': 'auto',
-            'fontWeight': 'bold'
-        },
-        # Auto-width based on content (header or body)
-        style_data_conditional=[
-            {
-                'if': {'column_id': col},
-                'minWidth': '100px',  # Minimum width
-                'width': 'auto',
-                'maxWidth': '300px', # Maximum width before wrapping
-            } for col in df.columns
-        ]
+# --- Step 2: Prepare Your Data ---
+# Create some sample data that matches your described structure
+# (Year, Month, Complete Date) for rows and (Country, Stock Market, Company) for columns.
+def generate_sample_data(num_records=1000):
+    """Generates a sample DataFrame for the pivot table."""
+    data = []
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=365)
+
+    countries = ['USA', 'UK', 'Germany', 'Japan']
+    stock_markets = {
+        'USA': ['NASDAQ', 'NYSE'],
+        'UK': ['LSE'],
+        'Germany': ['FWB'],
+        'Japan': ['TSE']
+    }
+    companies = ['Apple', 'Microsoft', 'Tesla', 'Unilever', 'Siemens', 'Toyota']
+
+    for _ in range(num_records):
+        date = start_date + timedelta(days=random.randint(0, 365))
+        country = random.choice(countries)
+        stock_market = random.choice(stock_markets[country])
+        company = random.choice(companies)
+
+        data.append({
+            'Year': date.year,
+            'Month': date.strftime('%B'),
+            'Complete Date': date.strftime('%Y-%m-%d'),
+            'Country': country,
+            'Stock Market': stock_market,
+            'Company': company,
+            'Revenue': random.randint(100, 1000)
+        })
+    return pd.DataFrame(data)
+
+
+# Generate the DataFrame
+df = generate_sample_data()
+
+# --- Step 3: Configure the PivotTable Component ---
+app.layout = html.Div(style={'fontFamily': 'sans-serif', 'padding': '20px'}, children=[
+    html.H1("Dynamic Pivot Table Tutorial", style={'textAlign': 'center', 'color': '#333'}),
+    html.P("This table is powered by dash-pivottable. Drag and drop the fields to explore the data.",
+           style={'marginBottom': '20px'}),
+
+    dash_pivottable.PivotTable(
+        id='my-pivot-table',
+        data=df.to_dict('records'),  # Data must be a list of dictionaries
+
+        # Initial hierarchical row and column configuration
+        rows=['Year', 'Month'],
+        cols=['Country', 'Stock Market'],
+
+        # The value to be aggregated
+        vals=['Revenue'],
+        aggregatorName='Sum',
+
+        # Initial rendering mode
+        rendererName='Table'
     ),
-    html.Div(id='datatable-interactivity-container')
+
+    # This div will display the JSON output of the table's state
+    html.Div([
+        html.H3("Pivot Table State (JSON):", style={'marginTop': '40px', 'color': '#555'}),
+        dcc.Loading(
+            id="loading-output",
+            type="default",
+            children=html.Pre(id='pivot-output',
+                              style={'border': '1px solid #ccc', 'padding': '10px', 'backgroundColor': '#f9f9f9',
+                                     'whiteSpace': 'pre-wrap', 'wordWrap': 'break-word'})
+        )
+    ])
 ])
 
+
+# --- Step 4: Create a Callback to Capture the State ---
 @app.callback(
-    Output('datatable-interactivity-container', 'children'),
-    Input('datatable-interactivity', 'data'),
-    Input('datatable-interactivity', 'columns'))
-def display_output(rows, columns):
-    if rows:
-        return html.Div([
-            html.H3('Selected Data'),
-            dash_table.DataTable(
-                data=rows,
-                columns=[{"name": i, "id": i} for i in columns]
-            )
-        ])
+    Output('pivot-output', 'children'),
+    [
+        Input('my-pivot-table', 'data'),
+        Input('my-pivot-table', 'rows'),
+        Input('my-pivot-table', 'cols'),
+        Input('my-pivot-table', 'vals'),
+        Input('my-pivot-table', 'aggregatorName')
+    ]
+)
+def update_pivot_output(data, rows, cols, vals, aggregator_name):
+    # This callback is triggered whenever the user changes the table configuration.
+    # It returns a JSON string of the current state for demonstration.
+    state = {
+        'number_of_data_rows': len(data),
+        'current_rows': rows,
+        'current_cols': cols,
+        'current_vals': vals,
+        'current_aggregator': aggregator_name
+    }
+    return str(state)
+
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
