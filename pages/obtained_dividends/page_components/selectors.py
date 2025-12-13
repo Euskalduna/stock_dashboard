@@ -68,15 +68,13 @@ def get_page_general_selector_row(obtained_dividends_df):
     selector_list = []
     selector_col_list = []
 
-
-
     # get the option dict lists
     ## general cases
-    owner_option_dict_list = get_option_dict_list(obtained_dividends_df, "Propietario", True)
-    broker_option_dict_list = get_option_dict_list(obtained_dividends_df, "Broker", True)
-    stock_market_option_dict_list = get_option_dict_list(obtained_dividends_df, "Mercado", True)
+    owner_option_dict_list = get_option_dict_list(obtained_dividends_df, "owner", True)
+    broker_option_dict_list = get_option_dict_list(obtained_dividends_df, "broker", True)
+    stock_market_option_dict_list = get_option_dict_list(obtained_dividends_df, "market", True)
     country_option_dict_list = get_option_dict_list(obtained_dividends_df, "stock_market_country", True)
-    year_option_dict_list = get_option_dict_list(obtained_dividends_df, "Año Cobro", False)
+    year_option_dict_list = get_option_dict_list(obtained_dividends_df, "payment_year", False)
 
     ## particular cases
     month_option_dict_list = get_month_dict_list()

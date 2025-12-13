@@ -14,20 +14,19 @@ def initialize_context():
 
 def add_risk_diversification_criteria():
     risk_diversification_criteria_dict_list = [
-        # {'criteria_name': 'empresa', 'data_column': 'Ticker'},
-        {'criteria_name': 'empresa', 'data_column': 'Nombre Empresa'},
-        {'criteria_name': 'sector', 'data_column': 'Sector'},
-        {'criteria_name': 'pais', 'data_column': 'Pais'},
-        {'criteria_name': 'moneda', 'data_column': 'Moneda del mercado'},
+        {'criteria_name': 'company', 'data_column': 'company_name'},
+        {'criteria_name': 'sector', 'data_column': 'sector'},
+        {'criteria_name': 'country', 'data_column': 'country'},
+        {'criteria_name': 'currency', 'data_column': 'market_currency'},
     ]
     return risk_diversification_criteria_dict_list
 
 
 def add_company_stock_prices():
     purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Ticker'].notna()]
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['Tipo de Valor'] == 'Acción']
-    company_stock_prices_df = purchases_and_sales_enriched_df[['Ticker', 'Mercado', 'Moneda del mercado']].drop_duplicates()
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['ticker'].notna()]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df['stock_type'] == 'Acción']
+    company_stock_prices_df = purchases_and_sales_enriched_df[['ticker', 'market', 'market_currency']].drop_duplicates()
     company_stock_prices_df = data_utils.get_companies_latest_stock_price(company_stock_prices_df)
     return company_stock_prices_df
 
