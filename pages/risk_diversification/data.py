@@ -5,13 +5,26 @@ import utils.data_utils as data_utils
 
 def get_page_data():
     purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df["Ticker"].notna()]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df["ticker"].notna()]
     purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[
-        purchases_and_sales_enriched_df["Tipo de Valor"] == "Acción"]
+        purchases_and_sales_enriched_df["stock_type"] == "Acción"]
     return purchases_and_sales_enriched_df
 
 
-def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column, filter_dict_list=[]):
+# def get_data_filtered_by_dropdowns(df, filter_dict_list):
+#     filtered_data_df = df
+#
+#     for filter_dict in filter_dict_list:
+#         column_to_filter = filter_dict['column_to_filter']
+#         values_to_keep_list = filter_dict['values_to_keep']
+#
+#         if values_to_keep_list:
+#             filtered_data_df = df[df[column_to_filter].isin(values_to_keep_list)]
+#
+#     return filtered_data_df
+
+
+def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column):
     def calculate_weight_by_group(df, group, weight_criteria):
         # Si la empresa tiene tipo de valor accion y accion es VENTA, entonces, debo multiplicar el valor por -1
         # ventas_df = df[(df["Tipo de Valor"] == "Acción") & (df["Acción"] == "Venta")]
@@ -35,20 +48,11 @@ def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column
             print(e)
         return latest_stock_value
 
-    # df['Dinero (EUR)'] = df.loc[df['Acción'] == 'Venta', 'Dinero (EUR)'].apply(lambda value: value * -1) # Tengo que compensar de alguna forma las ventas que he hecho, pero este no funciona INVESTIGAR MÁS!!!
-    # filter_dict_list = ['column_to_filter': 'Propietario', 'values_to_keep':[]]
-
     # Get the stocks latest values in each of the log's rows
     company_stock_prices_df = context['company_stock_prices_df'].copy()
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.merge(company_stock_prices_df, on=["Ticker", "Mercado"], how='left')
-    purchases_and_sales_enriched_df['latest_stock_value_in_euros'] = purchases_and_sales_enriched_df.apply(lambda row: calculate_stock_value(row['Acciones'], row['latest_stock_price_in_euros']), axis=1)
-    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.rename({'latest_stock_value_in_euros': 'Ultimo Valor (EUR)'}, axis=1)
-
-    for filter_dict in filter_dict_list:
-        column_to_filter = filter_dict['column_to_filter']
-        values_to_keep_list = filter_dict['values_to_keep']
-        if 'Todo' not in values_to_keep_list:
-            purchases_and_sales_enriched_df = purchases_and_sales_enriched_df[purchases_and_sales_enriched_df[column_to_filter].isin(values_to_keep_list)]
+    purchases_and_sales_enriched_df = purchases_and_sales_enriched_df.merge(company_stock_prices_df, on=["ticker", "market"], how='left')
+    purchases_and_sales_enriched_df['latest_stock_value_in_euros'] = purchases_and_sales_enriched_df.apply(lambda row: calculate_stock_value(row['stock_quantity'], row['latest_stock_price_in_euros']), axis=1)
+    # filtered_purchases_and_sales_enriched_df = filtered_purchases_and_sales_enriched_df.rename({'latest_stock_value_in_euros': 'Ultimo Valor (EUR)'}, axis=1)
 
     weight_by_criteria_df = calculate_weight_by_group(
         purchases_and_sales_enriched_df,
