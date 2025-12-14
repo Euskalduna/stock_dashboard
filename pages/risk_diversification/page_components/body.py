@@ -1,5 +1,6 @@
 import dash_bootstrap_components as dbc
 from pages.risk_diversification.page_components.panels.risk_diversification import get_risk_diversification
+from pages.risk_diversification.page_components.panels.risk_diversification_kpis import get_risk_diversification_kpis_panel
 import utils.general_utils as general_utils
 
 
@@ -25,6 +26,9 @@ def get_panels(purchases_and_sales_enriched_df, risk_diversification_criteria_di
         return risk_criteria_dict
 
     panel_list = []
+
+    # KPIs
+    risk_diversification_kpis_panel_children = get_risk_diversification_kpis_panel(purchases_and_sales_enriched_df)
 
     # Risk by Company
     risk_type = "company"
@@ -63,6 +67,7 @@ def get_panels(purchases_and_sales_enriched_df, risk_diversification_criteria_di
         weight_criteria_column
     )
 
+    panel_list.append({"panel_id": "risk_diversification_kpi", "panel": risk_diversification_kpis_panel_children})
     panel_list.append({"panel_id": "company", "panel": risk_by_company_panel_children})
     panel_list.append({"panel_id": "sector", "panel": risk_by_sector_panel_children})
     panel_list.append({"panel_id": "country", "panel": risk_by_country_panel_children})
