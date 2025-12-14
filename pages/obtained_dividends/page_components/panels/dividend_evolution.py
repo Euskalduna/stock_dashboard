@@ -35,7 +35,7 @@ def get_dividend_evolution_panel(obtained_dividends_df, data_column, first_group
         group_by_column = group_by_column_list[0]
         color_column = None
 
-    if data_column == "brute_obtained_money_in_euros":
+    if data_column == "gross_obtained_money_in_euros":
         pop_up_text_html = "<b>%{x}</b>  <br> Dividendo Bruto: %{y:,.2f}"
     else:
         pop_up_text_html = "<b>%{x}</b>  <br> Dividendo Neto: %{y:,.2f}"
