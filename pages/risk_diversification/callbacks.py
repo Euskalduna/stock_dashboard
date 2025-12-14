@@ -5,6 +5,7 @@ from app import app
 import pages.risk_diversification.page_components.warnings as risk_diversification_warnings
 import utils.data_utils as data_utils
 from pages.risk_diversification.page_components.panels.risk_diversification import get_risk_diversification
+from pages.risk_diversification.page_components.panels.risk_diversification_kpis import get_risk_diversification_kpis_panel
 
 
 #TODO: debo estandarizar la nomenclatura de los IDs
@@ -36,7 +37,14 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
 
         new_data_div_list = []
 
-        if case_to_update == "company":
+        if case_to_update == "risk_diversification_kpi":
+            # KPIs
+            risk_diversification_kpis_panel_children = get_risk_diversification_kpis_panel(
+                purchases_and_sales_enriched_df
+            )
+            new_data_div_list.append(risk_diversification_kpis_panel_children)
+
+        elif case_to_update == "company":
             risk_type = "company"
             risk_criteria_dict = get_risk_criteria_dict(risk_type, risk_diversification_criteria_dict_list)
 
