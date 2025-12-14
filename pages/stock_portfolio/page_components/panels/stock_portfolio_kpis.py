@@ -88,7 +88,11 @@ def get_stock_portfolio_kpis_panel(stock_portfolio_df, obtained_dividends_df):
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"valueformat": ",.2f", "font_color": "green" if stock_portfolio_money_invested_vs_current_value_relative_difference >= 0 else "red"}
+        number_value_format={
+            "valueformat": ",.2f",
+            "font_color": "green" if stock_portfolio_money_invested_vs_current_value_relative_difference >= 0 else "red",
+            "font_size": 65
+        }
         # paper_bg_color="#f8f9fa"
     )
 
@@ -100,7 +104,11 @@ def get_stock_portfolio_kpis_panel(stock_portfolio_df, obtained_dividends_df):
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"font_color": "green" if stock_portfolio_money_invested_vs_current_value_absolute_difference >= 0 else "red"}
+        number_value_format={
+            "valueformat": ",.0f",
+            "font_color": "green" if stock_portfolio_money_invested_vs_current_value_absolute_difference >= 0 else "red",
+            "font_size": 65
+        }
         # paper_bg_color="#f8f9fa"
     )
 
@@ -112,7 +120,11 @@ def get_stock_portfolio_kpis_panel(stock_portfolio_df, obtained_dividends_df):
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"valueformat": ",.2f", "font_color": "green" if stock_portfolio_money_invested_vs_current_value_relative_difference >=0 else "red"}
+        number_value_format={
+            "valueformat": ",.2f",
+            "font_color": "green" if stock_portfolio_money_invested_vs_current_value_relative_difference >=0 else "red",
+            "font_size": 65
+        }
         # paper_bg_color="#f8f9fa"
     )
 
@@ -124,7 +136,11 @@ def get_stock_portfolio_kpis_panel(stock_portfolio_df, obtained_dividends_df):
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"font_color": "green" if stock_portfolio_money_and_dividends_invested_vs_current_value_absolute_difference >= 0 else "red"}
+        number_value_format={
+            "valueformat": ",.0f",
+            "font_color": "green" if stock_portfolio_money_and_dividends_invested_vs_current_value_absolute_difference >= 0 else "red",
+            "font_size": 65
+        }
         # paper_bg_color="#f8f9fa"
     )
 
