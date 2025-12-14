@@ -23,7 +23,7 @@ def get_table_config():
         }
     ]
 
-    style_table = {'borderRadius': '10px', 'overflow': 'hidden'}
+    style_table = {'borderRadius': '10px', 'overflow': 'auto'}
 
     table_config_dict = {
         'style_header': style_header,

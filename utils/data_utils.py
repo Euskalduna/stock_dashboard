@@ -45,6 +45,10 @@ def get_purchases_and_sales_log(filter_dict_list=[]):
     compra_ventas_df.loc[sales_condition, sales_columns_to_alter] = compra_ventas_df.loc[sales_condition, sales_columns_to_alter] * -1
 
     filtered_compra_ventas_df = get_data_filtered_by_dropdowns(compra_ventas_df, filter_dict_list)
+    filtered_compra_ventas_df = filtered_compra_ventas_df.round(2)  # makes that all numeric columns have 2 decimals
+    # Drop rows where year is NaN. It will be interpreted as no dividend was paid.
+    filtered_compra_ventas_df = filtered_compra_ventas_df[~filtered_compra_ventas_df['year'].isna()]
+    filtered_compra_ventas_df['year'] = filtered_compra_ventas_df['year'].astype(int)
     return filtered_compra_ventas_df
 
 
@@ -90,6 +94,11 @@ def get_obtained_dividends(filter_dict_list=[]):
     )
 
     filtered_obtained_dividends_df = get_data_filtered_by_dropdowns(obtained_dividends_df, filter_dict_list)
+    filtered_obtained_dividends_df = filtered_obtained_dividends_df.round(2) # makes that all numeric columns have 2 decimals
+    # Drop rows where payment_year is NaN. It will be interpreted as no dividend was paid.
+    filtered_obtained_dividends_df = filtered_obtained_dividends_df[~filtered_obtained_dividends_df['payment_year'].isna()]
+    filtered_obtained_dividends_df['payment_year'] = filtered_obtained_dividends_df['payment_year'].astype(int)
+    filtered_obtained_dividends_df['payment_month'] = filtered_obtained_dividends_df['payment_month'].astype(int)
     return filtered_obtained_dividends_df
 
 
