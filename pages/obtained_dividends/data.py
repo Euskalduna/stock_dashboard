@@ -51,17 +51,17 @@ def get_dividends_by_year(obtained_dividends_df, data_column, group_by_column_li
 def get_dividend_data_for_pivot_table(obtained_dividends_df):
     # Keep the columns that I thought that would be more important to experiment with
     columns_to_keep = ["payment_year", "payment_month", "payment_date", "stock_market_country", "market",
-                       "company_name", "ticker", "owner", "broker", "brute_obtained_money_in_euros",
-                       "net_obtained_money_in_euros", "brute_obtained_money", "net_obtained_money", "obtained_money_currency"]
+                       "company_name", "ticker", "owner", "broker", "gross_obtained_money_in_euros",
+                       "net_obtained_money_in_euros", "gross_obtained_money", "net_obtained_money", "obtained_money_currency"]
     return obtained_dividends_df[columns_to_keep]
 
 
-# def get_total_brute_obtained_dividends(obtained_dividends_df, filter_dict_list=[]):
+# def get_total_gross_obtained_dividends(obtained_dividends_df, filter_dict_list=[]):
 #     filtered_obtained_dividends_df = get_obtained_dividends_filtered_by_dropdowns(
 #         obtained_dividends_df,
 #         filter_dict_list
 #     )
 #
-#     total_brute_obtained_dividends = filtered_obtained_dividends_df["Dinero BRUTO (EUR)"].sum()
+#     total_gross_obtained_dividends = filtered_obtained_dividends_df["Dinero BRUTO (EUR)"].sum()
 #
-#     return total_brute_obtained_dividends
+#     return total_gross_obtained_dividends

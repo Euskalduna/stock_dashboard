@@ -20,12 +20,17 @@ page_title = "Cartera de acciones"
 
 purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
 stock_portfolio_df = stock_portfolio_data.get_stock_portfolio(purchases_and_sales_enriched_df)
+obtained_dividends_df = data_utils.get_obtained_dividends()
 
 # Get Page components
 page_title_row = stock_portfolio_titles.get_page_title_row(page_title)
-warning_row = stock_portfolio_warnings.get_page_empty_warning_row()
+
+warning_text = "ADVERTENCIA: los precios de las acciones tienen un RETRASO DE 1 O 2 DÍAS, por ser de la API gratuita de Yahoo"
+warning_col = stock_portfolio_warnings.get_warning_col(warning_text)
+warning_row = stock_portfolio_warnings.get_page_warning_row(warning_col)
+
 selector_row = stock_portfolio_selectors.get_page_general_selector_row(purchases_and_sales_enriched_df)
-body_row = stock_portfolio_body.get_body_row(stock_portfolio_df, page_grid_columns)
+body_row = stock_portfolio_body.get_body_row(stock_portfolio_df, obtained_dividends_df, page_grid_columns)
 
 # Set the page layout with the components
 layout = dbc.Row(dbc.Col([

@@ -21,24 +21,24 @@ def update_page_data(
 ):
 
     def get_new_data_divs_to_draw(
-            case_to_update, obtained_dividends_df, currency_to_show_criteria,
-            revenue_to_show_criteria
+            case_to_update, obtained_dividends_df, purchases_and_sales_enriched_df,
+            currency_to_show_criteria, revenue_to_show_criteria
     ):
         def get_data_column(revenue_to_show_criteria, currency_to_show_criteria=None):
             # if revenue_to_show_criteria and currency_to_show_criteria != None:
             if revenue_to_show_criteria and currency_to_show_criteria:
                 if currency_to_show_criteria == "Euro" and revenue_to_show_criteria == "Bruto":
-                    data_column = "brute_obtained_money_in_euros"
+                    data_column = "gross_obtained_money_in_euros"
                 elif currency_to_show_criteria == "Euro" and revenue_to_show_criteria == "Neto":
                     data_column = "net_obtained_money_in_euros"
                 elif currency_to_show_criteria == "Moneda local" and revenue_to_show_criteria == "Bruto":
-                    data_column = "brute_obtained_money"
+                    data_column = "gross_obtained_money"
                 else:
                     data_column = "net_obtained_money"
 
             else:
                 if revenue_to_show_criteria == "Bruto":
-                    data_column = "brute_obtained_money_in_euros"
+                    data_column = "gross_obtained_money_in_euros"
                 else:
                     data_column = "net_obtained_money_in_euros"
             return data_column
@@ -54,7 +54,11 @@ def update_page_data(
 
         new_data_div_list = []
 
-        if case_to_update == "dividend_weight_by_company_panel":
+        if case_to_update == "dividends_kpi_panel":
+            panel_children = obtained_dividends_body.get_dividends_kpis_panel(obtained_dividends_df, purchases_and_sales_enriched_df)
+            new_data_div_list.append(panel_children)
+
+        elif case_to_update == "dividend_weight_by_company_panel":
             # Panel del PIE CHART
             weight_criteria_column = get_data_column(revenue_to_show_criteria)
 
@@ -84,10 +88,6 @@ def update_page_data(
             ## ME importan los otros filtros
 
             panel_children = obtained_dividends_body.get_dividend_pivot_table(obtained_dividends_df)
-            new_data_div_list.append(panel_children)
-
-        elif case_to_update == "total_brute_obtained_dividends_panel":
-            panel_children = obtained_dividends_body.get_kpi_indicators_panel(obtained_dividends_df)
             new_data_div_list.append(panel_children)
 
         else:
@@ -121,12 +121,13 @@ def update_page_data(
 
     # Get the data filtered by the dropdowns
     obtained_dividends_df = data_utils.get_obtained_dividends(column_filter_list)
-
+    purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
 
     # Get the new content for the panel
     new_data_div_list = get_new_data_divs_to_draw(
         case_to_update,
         obtained_dividends_df,
+        purchases_and_sales_enriched_df,
         currency_to_show_criteria,
         revenue_to_show_criteria
     )
