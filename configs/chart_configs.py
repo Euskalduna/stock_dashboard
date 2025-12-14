@@ -37,7 +37,6 @@ def get_kpi_indicator_config(
         paper_bg_color="#f8f9fa"
 ):
     """
-    margin_dict={"t": 40, "b": 10, "l": 10, "r": 10},
     Returns a reusable configuration for KPI indicators.
     """
 

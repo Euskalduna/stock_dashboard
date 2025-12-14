@@ -44,7 +44,11 @@ def get_pie_chart(
     pie_chart_html_component = dcc.Graph(
         id=pie_chart_id,
         figure=pie_chart,
-        config={'displayModeBar': False}
+        # config={'displayModeBar': False}
+        config={
+            'displaylogo': False,
+            'displayModeBar': True,
+        }
     )
 
     return pie_chart_html_component
@@ -85,13 +89,17 @@ def get_bar_chart(
         legend=legend_format_dict,
         hoverlabel=pop_up_format_dict,
         paper_bgcolor=paper_bg_color,
-        plot_bgcolor=plot_bg_color
+        plot_bgcolor=plot_bg_color,
     )
 
     bar_chart_html_component = dcc.Graph(
         id=bar_chart_id,
         figure=bar_chart,
-        config={'displayModeBar': False}
+        # config={'displayModeBar': False}
+        config={
+            'displaylogo': False,
+            'displayModeBar': True,
+        }
     )
 
     return bar_chart_html_component
@@ -99,7 +107,7 @@ def get_bar_chart(
 
 def get_kpi_indicator(
         kpi_id, text_dict, value, mode, domain_dict, height, margin_dict,
-        paper_bg_color="rgba(0,0,0,0)", number={"valueformat": ",.0f"}
+        paper_bg_color="rgba(0,0,0,0)", number_value_format={"valueformat": ",.0f"}
 ):
     """
     It creates a KPI indicator using Plotly Graph Objects and returns it as a Dash HTML component.
@@ -124,7 +132,7 @@ def get_kpi_indicator(
         value=value,
         title=text_dict,
         domain=domain_dict,
-        number=number
+        number=number_value_format
     ))
 
     # Ajuste de layout para un aspecto limpio de KPI
@@ -139,7 +147,11 @@ def get_kpi_indicator(
     kpi_indicator_html_component = dcc.Graph(
         id=kpi_id,
         figure=kpi_indicator,
-        config={'displayModeBar': False}
+        # config={'displayModeBar': False}
+        config={
+            'displaylogo': False,
+            'displayModeBar': False,
+        }
     )
 
     return kpi_indicator_html_component
