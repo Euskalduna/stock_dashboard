@@ -107,7 +107,7 @@ def get_bar_chart(
 
 def get_kpi_indicator(
         kpi_id, text_dict, value, mode, domain_dict, height, margin_dict,
-        paper_bg_color="rgba(0,0,0,0)", number_value_format={"valueformat": ",.0f"}
+        paper_bg_color="rgba(0,0,0,0)", number_value_format={"valueformat": ",.0f", "font_size": 65}
 ):
     """
     It creates a KPI indicator using Plotly Graph Objects and returns it as a Dash HTML component.
