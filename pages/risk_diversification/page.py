@@ -21,7 +21,7 @@ purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
 
 # Get Page components
 page_title_row = risk_diversification_titles.get_page_title_row(page_title)
-warning_row = risk_diversification_warnings.get_page_empty_warning_row()
+warning_row = risk_diversification_warnings.get_page_warning_row()
 selector_row = risk_diversification_selectors.get_page_general_selector_row(purchases_and_sales_enriched_df, default_weight_criteria_column)
 body_row = risk_diversification_body.get_body_row(purchases_and_sales_enriched_df, risk_diversification_criteria_dict_list, default_weight_criteria_column, page_grid_columns)
 

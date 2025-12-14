@@ -131,6 +131,6 @@ def update_page_warning_row(selected_options_weight):
 
     warning_col = risk_diversification_warnings.get_empty_warning_col()
     if weight_criteria_column == "latest_stock_value_in_euros":
-        text = "ADVERTENCIA: los precios de las acciones tienen un RETRASO DE 1 O 2 DÍAS, por ser de la API de Yahoo y gratis"
+        text = "ADVERTENCIA: los precios de las acciones tienen un RETRASO DE 1 O 2 DÍAS, por ser de la API gratuita de Yahoo"
         warning_col = risk_diversification_warnings.get_warning_col(text)
     return [warning_col]

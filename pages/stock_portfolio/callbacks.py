@@ -5,6 +5,7 @@ import pages.stock_portfolio.page_components.body as stock_portfolio_body
 import pages.stock_portfolio.data as stock_portfolio_data
 import utils.data_utils as data_utils
 from pages.stock_portfolio.page_components.panels.stock_portfolio import get_portfolio_table
+from pages.stock_portfolio.page_components.panels.stock_portfolio_kpis import get_stock_portfolio_kpis_panel
 
 # @app.callback(
 #     [Output({'type': 'stock-portfolio-data-panel', 'index': MATCH}, 'children')],
@@ -16,7 +17,6 @@ from pages.stock_portfolio.page_components.panels.stock_portfolio import get_por
 #     """
 #     Borra y vuelve a poner Generar los datos en función de los valores seleccionados en los INPUTs
 #     """
-#     print("HOLAAAA")
 #
 #     def get_columns_by_currency(currency_criteria_column):
 #         # TODO: hacer algo para que esto sea dinamico y no esté Hardcodeado!!!!!
@@ -133,7 +133,6 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     """
     Borra y vuelve a poner Generar los datos en función de los valores seleccionados en los INPUTs
     """
-    print("HOLAAAA")
 
     def get_columns_by_currency(currency_criteria_column):
         # TODO: hacer algo para que esto sea dinamico y no esté Hardcodeado!!!!!
@@ -186,9 +185,16 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
         }
         return user_column_names_dict
 
-    def get_new_data_divs_to_draw(stock_portfolio_df, case_to_update):
+    def get_new_data_divs_to_draw(stock_portfolio_df, obtained_dividends_df, case_to_update):
         new_data_div_list = []
-        if case_to_update == 'portfolio':
+        if case_to_update == 'stock_portfolio_kpi':
+            panel_children = get_stock_portfolio_kpis_panel(
+                stock_portfolio_df,
+                obtained_dividends_df
+            )
+            new_data_div_list.append(panel_children)
+
+        elif case_to_update == 'stock_portfolio_table':
             # Get de div of each sector of the page (that is supposed to contain data)
             panel_children = get_portfolio_table(
                 stock_portfolio_df
@@ -216,6 +222,7 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched(filter_dict_list=column_filter_list)
     stock_portfolio_df = stock_portfolio_data.get_stock_portfolio(purchases_and_sales_enriched_df)
     # TODO: aqui deberia de eliminar las columnas que no quiero mostrar segun la moneda seleccionada
+    obtained_dividends_df = data_utils.get_obtained_dividends(filter_dict_list=column_filter_list)
 
     # Get the ID of the Panel to update / overwrite its children attribute
     case_to_update = callback_context.outputs_grouping[0]['id']['index']
@@ -224,6 +231,7 @@ def update_page_data(selected_options_owner, selected_options_broker, selected_o
     ## Get the new data to draw in the browser
     new_stock_portfolio_div_list = get_new_data_divs_to_draw(
         stock_portfolio_df,
+        obtained_dividends_df,
         case_to_update
     )
 

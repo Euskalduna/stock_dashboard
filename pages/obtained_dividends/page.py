@@ -16,12 +16,13 @@ page_title = "Dividendos Cobrados"
 
 # Get the data
 obtained_dividends_df = data_utils.get_obtained_dividends()
+purchases_and_sales_enriched_df = data_utils.get_purchases_and_sales_enriched()
 
 # Get Page components
 page_title_row = obtained_dividends_titles.get_page_title_row(page_title)
 # warning_row = obtained_dividends_warnings.get_page_empty_warning_row()
 selector_row = obtained_dividends_selectors.get_page_general_selector_row(obtained_dividends_df)
-body_row = obtained_dividends_body.get_body_row(obtained_dividends_df, page_grid_columns)
+body_row = obtained_dividends_body.get_body_row(obtained_dividends_df, purchases_and_sales_enriched_df, page_grid_columns)
 
 # Set the page layout with the components
 layout = dbc.Row(dbc.Col([

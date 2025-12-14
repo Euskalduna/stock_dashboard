@@ -26,7 +26,7 @@ def get_dividend_pivot_table(obtained_dividends_df):
         cols=['stock_market_country', 'market'],
 
         # The value to be aggregated
-        vals=['brute_obtained_money_in_euros'],
+        vals=['gross_obtained_money_in_euros'],
         aggregatorName='Sum',
 
         # Initial rendering mode
