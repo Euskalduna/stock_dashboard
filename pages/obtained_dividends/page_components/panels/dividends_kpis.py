@@ -79,7 +79,7 @@ def get_dividends_kpis_panel(obtained_dividends_df, purchases_and_sales_enriched
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"valueformat": ",.2f"}
+        number_value_format={"valueformat": ",.2f", "font_size": 65}
         # paper_bg_color="#f8f9fa"
     )
     total_net_dividends_and_real_invested_ratio_html_component = charts_utils.get_kpi_indicator(
@@ -90,7 +90,7 @@ def get_dividends_kpis_panel(obtained_dividends_df, purchases_and_sales_enriched
         domain_dict=kpi_chart_config['domain_dict'],
         height=kpi_chart_config['height'],
         margin_dict=kpi_chart_config['margin_dict'],
-        number_value_format={"valueformat": ",.2f"}
+        number_value_format={"valueformat": ",.2f", "font_size": 65}
         # paper_bg_color="#f8f9fa"
     )
 
