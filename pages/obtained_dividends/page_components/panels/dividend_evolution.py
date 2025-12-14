@@ -26,7 +26,7 @@ def get_dividend_evolution_panel(obtained_dividends_df, data_column, first_group
     # Get the elements configuration and other attributes
     bar_chart_obj_id = f"dividend_evolution_bar_chart"
     bar_chart_config = chart_configs.get_pie_chart_config()
-    if (len(group_by_column_list) > 1) & ("Año" in group_by_column_list[0]):
+    if (len(group_by_column_list) > 1) & ("payment_year" in group_by_column_list[0]):
         # Case to group by Year and Currency
         group_by_column = group_by_column_list[0]
         color_column = group_by_column_list[1]
@@ -35,15 +35,28 @@ def get_dividend_evolution_panel(obtained_dividends_df, data_column, first_group
         group_by_column = group_by_column_list[0]
         color_column = None
 
+    if data_column == "brute_obtained_money_in_euros":
+        pop_up_text_html = "<b>%{x}</b>  <br> Dividendo Bruto: %{y:,.2f}"
+    else:
+        pop_up_text_html = "<b>%{x}</b>  <br> Dividendo Neto: %{y:,.2f}"
+
+    if color_column:
+        pop_up_text_html = pop_up_text_html + " %{fullData.name} <extra></extra>"
+    else:
+        pop_up_text_html = pop_up_text_html + " EUR <extra></extra>"
+
+    print(pop_up_text_html)
+
     # Create the elements (Bar Chart)
     bar_chart_html_component = charts_utils.get_bar_chart(
         bar_chart_id=bar_chart_obj_id,
-        data_df=dividends_by_year_df,
+        data_df=dividends_by_year_df.sort_values(by=group_by_column),
         x_column=group_by_column,
         y_column=data_column,
         color_column=color_column,
         legend_format_dict=bar_chart_config['legend_format_dict'],
         pop_up_format_dict=bar_chart_config['pop_up_format_dict'],
+        pop_up_text_html=pop_up_text_html,
     )
 
     # Assembly of the panel elements
