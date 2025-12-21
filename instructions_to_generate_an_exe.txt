@@ -1,31 +1,47 @@
 # Instructions
 1- install "pyinstaller"
 2- use the command
-    pyi-makespec --windowed --name <name_of_the_distribution> <name_of_the_run.py>
+    pyi-makespec --windowed --name <name_of_the_distribution> <name_of_the_run.py>  # el --windowed es para que no salga la consola
+OR
+    pyi-makespec --console --name <name_of_the_distribution> <name_of_the_run.py>   # el --console es para que salga la consola
 EXAMPLE:
     pyi-makespec --windowed --name Cartera_Cuadro_de_Mando my_main.py
+OR
+    pyi-makespec --console --name Cartera_Cuadro_de_Mando my_main.py
 
-3- Modify the .spec file generated
-    pathex=['C:\\Users\\Ale\\PycharmProjects\\stock_dashboard'],    --> put the base path of the project
-    datas=[
-        ('assets','assets'),
-        ('pages','pages'),
-        ('utils','utils'),
-    ],                                                              --> put the folders that need to be included
-    hiddenimports=[
-        'pkg_resources.py2_warn',
-        'pandas',
-        'plotly.graph_objects',
-        'dash_core_components',
-        'dash_html_components',
-        'dash_table',
-        'forex_python',
-        'forex_python.converter',
-        'yfinance',
-    ],                                                              --> these are the imports to take into account
-                                                                    basically, you will know what to include
-                                                                    whenever you generate the .exe and it fails becaus
-                                                                    it doesnt have the X library
+
+3- The previous command will generate an .spec file (<name_of_the_distribution>.spec) in the same directory
+Go to that file and edit it as follows:
+
+    Add the following import at the begining of the file as it is needed for including dash_pivottable
+        import os
+        import dash_pivottable
+        pivottable_path = os.path.dirname(dash_pivottable.__file__)
+
+    Edit the following parameters in .spec file:
+        pathex=['C:\\Users\\<user_name>\\PycharmProjects\\stock_dashboard'],    --> put the base path of the project
+        datas=[
+            ('assets','assets'),
+            ('configs','configs'),
+            ('pages','pages'),
+            ('utils','utils'),
+            (pivottable_path, 'dash_pivottable'),
+        ],                                                              --> put the folders that need to be included
+        hiddenimports=[
+            'pkg_resources.py2_warn',
+            'pandas',
+            'plotly.graph_objects',
+            'dash_core_components',
+            'dash_html_components',
+            'dash_table',
+            'forex_python',
+            'forex_python.converter',
+            'yfinance',
+            'dash_pivottable'
+        ],                                                              --> these are the imports to take into account
+                                                                        basically, you will know what to include
+                                                                        whenever you generate the .exe and it fails because
+                                                                        it doesnt have the X library
 4- Generate the .exe using the command
     pyinstaller <name_of_the_distribution>.spec --noconfirm
 EXAMPLE:
