@@ -74,11 +74,11 @@ def get_company_info(filter_dict_list=[]):
 
 def get_obtained_dividends(filter_dict_list=[]):
     data_base_path = get_data_path()
-    data_path = os.path.join(data_base_path, "log_dividendos.csv")
+    data_path = os.path.join(data_base_path, "log_dividendos_cobrados.csv")
     obtained_dividends_df = pd.read_csv(data_path, decimal=",")
 
     # Traduzco los nombres de las columnas para tenerlos en "programmer friendly"
-    titles_data_path = os.path.join(data_base_path, "titles_log_dividendos.csv")
+    titles_data_path = os.path.join(data_base_path, "titles_log_dividendos_cobrados.csv")
     titles_obtained_dividends_df = pd.read_csv(titles_data_path, decimal=",")
     obtained_dividends_df = obtained_dividends_df.rename(
         columns=dict(

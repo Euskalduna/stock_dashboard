@@ -11,19 +11,6 @@ def get_page_data():
     return purchases_and_sales_enriched_df
 
 
-# def get_data_filtered_by_dropdowns(df, filter_dict_list):
-#     filtered_data_df = df
-#
-#     for filter_dict in filter_dict_list:
-#         column_to_filter = filter_dict['column_to_filter']
-#         values_to_keep_list = filter_dict['values_to_keep']
-#
-#         if values_to_keep_list:
-#             filtered_data_df = df[df[column_to_filter].isin(values_to_keep_list)]
-#
-#     return filtered_data_df
-
-
 def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column, group_by_column):
     def calculate_weight_by_group(df, group, weight_criteria):
         # Si la empresa tiene tipo de valor accion y accion es VENTA, entonces, debo multiplicar el valor por -1
@@ -35,7 +22,8 @@ def get_weight_by_criteria_for_risk(purchases_and_sales_enriched_df, data_column
         # sales_columns_to_alter = ["Acciones", "Dinero", "Dinero (EUR)"]
         # df.loc[sales_condition, sales_columns_to_alter] = df.loc[sales_condition, sales_columns_to_alter] * -1
 
-        df_grouped = df.groupby(group).sum()[weight_criteria].reset_index().copy()
+        df_grouped = df.groupby(group).sum()
+        df_grouped = df_grouped[df_grouped["stock_quantity"] != 0][weight_criteria].reset_index().copy()
         df_grouped['weight'] = (df_grouped[weight_criteria] / df_grouped[weight_criteria].sum() * 100).round(2)
         # df_grouped['weight_to_display'] = df_grouped['weight'].apply(lambda value: f'{value} %')
         return df_grouped

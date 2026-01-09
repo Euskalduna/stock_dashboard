@@ -27,9 +27,9 @@ def get_dividends_kpis_panel(obtained_dividends_df, purchases_and_sales_enriched
 
     total_gross_dividends_text_dict = {"text": "Dividendos Brutos Ganados (EUR)"}
     total_net_dividends_text_dict = {"text": "Dividendos Netos Ganados (EUR)"}
-    total_real_invested_text_dict = {"text": "Total Real Invertido (EUR)"}
-    total_gross_dividends_and_real_invested_ratio_text_dict = {"text": "Ratio (%)"}
-    total_net_dividends_and_real_invested_ratio_text_dict = {"text": "Ratio (%)"}
+    total_real_invested_text_dict = {"text": "Total Real Invertido Actual (EUR)"}
+    total_gross_dividends_and_real_invested_ratio_text_dict = {"text": "Ratio por Bruto (%)"}
+    total_net_dividends_and_real_invested_ratio_text_dict = {"text": "Ratio por Neto (%)"}
 
     total_gross_obtained_dividends = obtained_dividends_df["gross_obtained_money_in_euros"].sum()
     total_net_obtained_dividends = obtained_dividends_df["net_obtained_money_in_euros"].sum()
